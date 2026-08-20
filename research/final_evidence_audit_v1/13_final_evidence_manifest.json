@@ -1,0 +1,33 @@
+{
+  "package": "final_evidence_audit_v1",
+  "purpose": "authoritative research consolidation; no experiment mutation",
+  "experiments_registered": 10,
+  "claims_classified": 11,
+  "datasets_registered": 6,
+  "source_hashes": {
+    "inspection\\class3_detector_v1.py": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+    "inspection\\class3_detector_results.csv": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+    "inspection\\class3_detector_channel_results.csv": "e42dfc0e2316d2294335ae6da4cc2f1db7089bf22e767763601209adbd3e8151",
+    "inspection\\class3_detector_report.json": "29e5b2efea0031321d7fbcdd2786c360c26c96fedaf43ec5c733d4225945716d",
+    "inspection\\class3_detector_evaluation.csv": "68d6795473e114cadd1dd942f97844adddd35c40a38eec7eb653f8b421e619a1",
+    "inspection\\mission1\\labels.csv": "1564d630f1ec1387d699ec81531ce57118051a220c8b7cba050a446a652b9082",
+    "inspection\\mission1\\anomaly_types.csv": "e0cadee4ee9697c5ca8d4f9e81067454d7d7a00d063ee0de33cbc77660eec8bc",
+    "inspection\\mission1\\channels.csv": "27a4d6819642effc2a590d49e5bd2c7a915c06a1eb78502c34bed055d1c76d5d",
+    "inspection\\class3_detector_v2\\v2_manifest.json": "4b7256805d8ae3273d8ebd6446aa7b638499f7207442261901c3134f47cc49ac",
+    "external\\opssat-ad\\data\\raw\\segments.csv": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+    "external\\opssat-ad\\data\\raw\\dataset.csv": "da20bc4bd3f30a3302ce06fe6a073bea6f036b297a92e83311d3f83b9c5e619b"
+  },
+  "generated_structured_outputs": [
+    "01_master_evidence_matrix.csv",
+    "02_experiment_registry.csv",
+    "03_claim_evidence_matrix.csv",
+    "04_dataset_and_population_inventory.csv",
+    "05_metric_registry.csv",
+    "06_failure_mode_registry.csv",
+    "07_reproducibility_registry.csv",
+    "08_integrity_registry.csv",
+    "data_discrepancy_log.csv"
+  ],
+  "detector_v3_authorized": false,
+  "yamcs_started": false
+}

@@ -1,0 +1,24 @@
+realtime:
+  services:
+    - class: org.yamcs.tctm.StreamParameterProvider
+    - class: org.yamcs.algorithms.AlgorithmManager
+    - class: org.yamcs.parameter.LocalParameterManager
+  config:
+    generateEvents: true
+    subscribeAll: true
+    persistParameters: false
+    recordInitialValues: false
+    recordLocalValues: true
+
+# Built-in processor types required by Yamcs archive/replay services.
+Archive:
+  services:
+    - class: org.yamcs.tctm.ReplayService
+
+ArchiveRetrieval:
+  services:
+    - class: org.yamcs.tctm.ReplayService
+
+ParameterArchive:
+  services:
+    - class: org.yamcs.tctm.ReplayService

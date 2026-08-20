@@ -1,0 +1,7 @@
+case_id,source_id,source_type,operator_label,actual_yamcs_status,status
+case_01_impulsive_class3,id_118,REAL_ESA_TELEMETRY,NOT_RUN,BLOCKED,BLOCKED
+case_02_short_class3,,REAL_ESA_TELEMETRY,NOT_RUN,BLOCKED,BLOCKED
+case_03_medium_class3,,REAL_ESA_TELEMETRY,NOT_RUN,BLOCKED,BLOCKED
+case_04_long_persistent_highdim_class3,,REAL_ESA_TELEMETRY,NOT_RUN,BLOCKED,BLOCKED
+case_05_difficult_label_negative,,REAL_ESA_TELEMETRY,NOT_RUN,BLOCKED,BLOCKED
+case_06_high_dimensional_control,,REAL_ESA_TELEMETRY,NOT_RUN,BLOCKED,BLOCKED

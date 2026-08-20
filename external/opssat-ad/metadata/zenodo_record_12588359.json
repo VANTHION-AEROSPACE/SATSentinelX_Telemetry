@@ -1,0 +1,210 @@
+﻿{
+    "created":  "2024-07-09T10:30:16.945687+00:00",
+    "modified":  "2024-07-09T10:30:17.145116+00:00",
+    "id":  12588359,
+    "conceptrecid":  "12588358",
+    "doi":  "10.5281/zenodo.12588359",
+    "conceptdoi":  "10.5281/zenodo.12588358",
+    "doi_url":  "https://doi.org/10.5281/zenodo.12588359",
+    "metadata":  {
+                     "title":  "OPSSAT-AD - anomaly detection dataset for satellite telemetry",
+                     "doi":  "10.5281/zenodo.12588359",
+                     "publication_date":  "2024-06-29",
+                     "description":  "\u003cp\u003eThis is the AI-ready benchmark dataset (OPSSAT-AD) containing the telemetry data acquired on board OPS-SAT---a CubeSat mission that has been operated by the European Space Agency.\u003c/p\u003e\n\u003cp\u003eIt is accompanied by the paper with baseline results obtained using 30 supervised and unsupervised classic and deep machine learning algorithms for anomaly detection. They were trained and validated using the training-test dataset split introduced in this work, and we present a suggested set of quality metrics that should always be\u0026nbsp;calculated to confront the new algorithms for anomaly detection while exploiting OPSSAT-AD. We believe that this work may become an important step toward building a fair, reproducible, and objective validation procedure that can be used to quantify the capabilities of the emerging anomaly detection techniques in an unbiased and fully transparent way.\u003c/p\u003e\n\u003cp\u003eThe two included files are:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003esegments.csv\u003c/code\u003e with the acquired telemetry signals from ESA OPS-SAT aircraft,\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003edataset.csv\u003c/code\u003e with the extracted, synthetic features are computed for each manually split and labeled telemetry segment.\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e\u0026nbsp;\u003c/p\u003e\n\u003cp\u003ePlease have a look at our two papers commenting on this dataset:\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eThe benchmark paper with results of 30 supervised and unsupervised anomaly detection models for this collection:\u003cbr\u003eRuszczak, B., Kotowski. K., Nalepa, J., Evans, D.:\u003cstrong\u003e The OPS-SAT benchmark for detecting anomalies in satellite telemetry, 2024\u003c/strong\u003e, \u003ca href=\"https://arxiv.org/abs/2407.04730\" target=\"_blank\" rel=\"noopener\"\u003epreprint arxiv: 2407.04730\u003c/a\u003e,\u003c/li\u003e\n\u003cli\u003ethe conference paper in which we presented some preliminary results for this dataset:\u003cbr\u003eRuszczak, B., Kotowski. K., Andrzejewski, J., et al.: (2023). Machine Learning Detects Anomalies in OPS-SAT Telemetry. Computational Science \u0026ndash; ICCS 2023. LNCS, vol 14073. Springer, Cham, \u003ca href=\"https://doi.org/10.1007/978-3-031-35995-8_21\"\u003eDOI:10.1007/978-3-031-35995-8_21\u003c/a\u003e.\u003c/li\u003e\n\u003c/ul\u003e",
+                     "access_right":  "open",
+                     "creators":  [
+                                      {
+                                          "name":  "Bogdan, Ruszczak",
+                                          "affiliation":  "Opole University of Technology",
+                                          "orcid":  "0000-0003-1089-1778"
+                                      }
+                                  ],
+                     "contributors":  [
+                                          {
+                                              "name":  "Ruszczak, Bogdan",
+                                              "affiliation":  "Opole University of Technology",
+                                              "type":  "Researcher",
+                                              "orcid":  "0000-0003-1089-1778"
+                                          },
+                                          {
+                                              "name":  "Kotowski, Krzysztof",
+                                              "affiliation":  "KP Labs",
+                                              "type":  "Researcher",
+                                              "orcid":  "0000-0003-2596-6517"
+                                          },
+                                          {
+                                              "name":  "Evans, David",
+                                              "affiliation":  "European Space Agency",
+                                              "type":  "Researcher",
+                                              "orcid":  "0009-0006-1790-5238"
+                                          },
+                                          {
+                                              "name":  "Nalepa, Jakub",
+                                              "affiliation":  "Silesian University of Technology",
+                                              "type":  "Researcher",
+                                              "orcid":  "0000-0002-4026-1569"
+                                          }
+                                      ],
+                     "keywords":  [
+                                      "anomaly detection",
+                                      "machine learning",
+                                      "deep learning",
+                                      "unsupervised learning",
+                                      "supervised learning",
+                                      "European Space Agency",
+                                      "ESA",
+                                      "telemetry",
+                                      "signal processing"
+                                  ],
+                     "related_identifiers":  [
+                                                 {
+                                                     "identifier":  "arXiv:2407.04730",
+                                                     "relation":  "documents",
+                                                     "resource_type":  "publication-journal",
+                                                     "scheme":  "arxiv"
+                                                 },
+                                                 {
+                                                     "identifier":  "10.1007/978-3-031-35995-8_21",
+                                                     "relation":  "references",
+                                                     "resource_type":  "publication-conferencepaper",
+                                                     "scheme":  "doi"
+                                                 }
+                                             ],
+                     "references":  [
+                                        "Ruszczak, B., Kotowski. K., Evans, D., Nalepa, J.: The OPS-SAT benchmark for detecting anomalies in satellite telemetry, 2024, arXiv: https://arxiv.org/abs/2407.04730",
+                                        "Ruszczak, B., Kotowski. K., Andrzejewski, J., et al.: (2023). Machine Learning Detects Anomalies in OPS-SAT Telemetry. Computational Science – ICCS 2023. LNCS, vol 14073. Springer, Cham, https://doi.org/10.1007/978-3-031-35995-8_21"
+                                    ],
+                     "language":  "eng",
+                     "custom":  {
+                                    "code:codeRepository":  "https://github.com/kplabs-pl/OPS-SAT-AD",
+                                    "code:programmingLanguage":  [
+                                                                     {
+                                                                         "id":  "jupyter_notebook",
+                                                                         "title":  {
+                                                                                       "en":  "Jupyter Notebook"
+                                                                                   }
+                                                                     },
+                                                                     {
+                                                                         "id":  "python",
+                                                                         "title":  {
+                                                                                       "en":  "Python"
+                                                                                   }
+                                                                     }
+                                                                 ],
+                                    "code:developmentStatus":  {
+                                                                   "id":  "active",
+                                                                   "title":  {
+                                                                                 "en":  "Active"
+                                                                             }
+                                                               }
+                                },
+                     "resource_type":  {
+                                           "title":  "Dataset",
+                                           "type":  "dataset"
+                                       },
+                     "license":  {
+                                     "id":  "cc-by-4.0"
+                                 },
+                     "grants":  [
+                                    {
+                                        "code":  "4000137339/22/NL/GLC/ov",
+                                        "internal_id":  "03wd9za21::4000137339/22/NL/GLC/ov",
+                                        "funder":  {
+                                                       "name":  "European Space Agency"
+                                                   },
+                                        "title":  "On-board Anomaly detection from the OPS-SAT telemetry using deep learning"
+                                    }
+                                ],
+                     "relations":  {
+                                       "version":  [
+                                                       {
+                                                           "index":  0,
+                                                           "is_last":  false,
+                                                           "parent":  {
+                                                                          "pid_type":  "recid",
+                                                                          "pid_value":  "12588358"
+                                                                      }
+                                                       }
+                                                   ]
+                                   }
+                 },
+    "title":  "OPSSAT-AD - anomaly detection dataset for satellite telemetry",
+    "links":  {
+                  "self":  "https://zenodo.org/api/records/12588359",
+                  "self_html":  "https://zenodo.org/records/12588359",
+                  "preview_html":  "https://zenodo.org/records/12588359?preview=1",
+                  "doi":  "https://doi.org/10.5281/zenodo.12588359",
+                  "self_doi":  "https://doi.org/10.5281/zenodo.12588359",
+                  "self_doi_html":  "https://zenodo.org/doi/10.5281/zenodo.12588359",
+                  "reserve_doi":  "https://zenodo.org/api/records/12588359/draft/pids/doi",
+                  "parent":  "https://zenodo.org/api/records/12588358",
+                  "parent_html":  "https://zenodo.org/records/12588358",
+                  "parent_doi":  "https://doi.org/10.5281/zenodo.12588358",
+                  "parent_doi_html":  "https://zenodo.org/doi/10.5281/zenodo.12588358",
+                  "self_iiif_manifest":  "https://zenodo.org/api/iiif/record:12588359/manifest",
+                  "self_iiif_sequence":  "https://zenodo.org/api/iiif/record:12588359/sequence/default",
+                  "files":  "https://zenodo.org/api/records/12588359/files",
+                  "media_files":  "https://zenodo.org/api/records/12588359/media-files",
+                  "archive":  "https://zenodo.org/api/records/12588359/files-archive",
+                  "archive_media":  "https://zenodo.org/api/records/12588359/media-files-archive",
+                  "latest":  "https://zenodo.org/api/records/12588359/versions/latest",
+                  "latest_html":  "https://zenodo.org/records/12588359/latest",
+                  "versions":  "https://zenodo.org/api/records/12588359/versions",
+                  "draft":  "https://zenodo.org/api/records/12588359/draft",
+                  "access_links":  "https://zenodo.org/api/records/12588359/access/links",
+                  "access_grants":  "https://zenodo.org/api/records/12588359/access/grants",
+                  "access_users":  "https://zenodo.org/api/records/12588359/access/users",
+                  "access_request":  "https://zenodo.org/api/records/12588359/access/request",
+                  "access":  "https://zenodo.org/api/records/12588359/access",
+                  "communities":  "https://zenodo.org/api/records/12588359/communities",
+                  "communities-suggestions":  "https://zenodo.org/api/records/12588359/communities-suggestions",
+                  "request_deletion":  "https://zenodo.org/api/records/12588359/request-deletion",
+                  "file_modification":  "https://zenodo.org/api/records/12588359/file-modification",
+                  "quota_increase":  "https://zenodo.org/api/records/12588359/quota-increase",
+                  "requests":  "https://zenodo.org/api/records/12588359/requests"
+              },
+    "updated":  "2024-07-09T10:30:17.145116+00:00",
+    "recid":  "12588359",
+    "revision":  4,
+    "files":  [
+                  {
+                      "id":  "2132eaab-e99a-4ae1-b653-718ce574860d",
+                      "key":  "segments.csv",
+                      "size":  17970946,
+                      "checksum":  "md5:1f4b6ffd0359efac96a6698ff557e0f9",
+                      "links":  {
+                                    "self":  "https://zenodo.org/api/records/12588359/files/segments.csv/content"
+                                }
+                  },
+                  {
+                      "id":  "ba0f11fb-a099-4a54-b61e-71b129504add",
+                      "key":  "dataset.csv",
+                      "size":  507568,
+                      "checksum":  "md5:c12fb83863afa4463dec07303a20bb14",
+                      "links":  {
+                                    "self":  "https://zenodo.org/api/records/12588359/files/dataset.csv/content"
+                                }
+                  }
+              ],
+    "swh":  {
+
+            },
+    "owners":  [
+                   {
+                       "id":  "1152194"
+                   }
+               ],
+    "status":  "published",
+    "stats":  {
+                  "downloads":  10896,
+                  "unique_downloads":  8297,
+                  "views":  7821,
+                  "unique_views":  6978,
+                  "version_downloads":  5835,
+                  "version_unique_downloads":  4367,
+                  "version_unique_views":  4136,
+                  "version_views":  4648
+              },
+    "state":  "done",
+    "submitted":  true
+}

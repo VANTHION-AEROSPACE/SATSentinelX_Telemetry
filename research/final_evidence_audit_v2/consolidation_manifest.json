@@ -1,0 +1,283 @@
+{
+  "creation_timestamp_utc": "2026-08-12T19:35:18.884272+00:00",
+  "experiment_count": 22,
+  "canonical_metric_count": 54,
+  "claim_count": 35,
+  "reviewer_attack_count": 26,
+  "figure_count": 7,
+  "table_count": 8,
+  "final_forensic_analyses": [
+    "E21 duration/dimensionality confound analysis",
+    "E22 direct population comparison"
+  ],
+  "reproducibility_status": "PASS for E22 population comparison; previous reproducibility statuses preserved",
+  "integrity_status": "PASS",
+  "external_review_packet_readiness": "READY",
+  "protected_inputs_unchanged": true,
+  "protected_hashes_before": {
+    "inspection/class3_detector_v1.py": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+    "inspection/class3_detector_v2/class3_detector_v2.py": "d736522523d769af13e173c13758623c161660df6ce6a3133167a3da78c7f044",
+    "inspection/class3_detector_results.csv": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+    "inspection/class3_detector_evaluation.csv": "68d6795473e114cadd1dd942f97844adddd35c40a38eec7eb653f8b421e619a1",
+    "inspection/class3_detector_v1_broader_evaluation_v1/broader_v1_evaluation.csv": "7c9eaabe383fe8b0352bf024ea0231b4568f110dc1e646aa07936288eb07c239",
+    "inspection/class3_detector_v1_broader_evaluation_v1/broader_v1_event_results.csv": "af2f3b8c6fec7bee831c3542968bb3a3e06c4202a1b98bd827474100ab2cbc10",
+    "inspection/esa_broader_control_characterization_v1/feature_table.csv": "c8bec2da7c059943fd2230620f861a4889cd57c900c6ff3b58021798fe8c45d1",
+    "inspection/esa_broader_control_characterization_v1/control_sampling_frame.csv": "3061c14fc314092911f346dd3c55663dff8abf6bd6f4e726ae1fbaef4f4407db",
+    "inspection/mission1/labels.csv": "1564d630f1ec1387d699ec81531ce57118051a220c8b7cba050a446a652b9082",
+    "inspection/mission1/anomaly_types.csv": "e0cadee4ee9697c5ca8d4f9e81067454d7d7a00d063ee0de33cbc77660eec8bc",
+    "inspection/mission1/channels.csv": "27a4d6819642effc2a590d49e5bd2c7a915c06a1eb78502c34bed055d1c76d5d",
+    "external/opssat-ad/data/raw/dataset.csv": "da20bc4bd3f30a3302ce06fe6a073bea6f036b297a92e83311d3f83b9c5e619b",
+    "external/opssat-ad/data/raw/segments.csv": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+    "yamcs/actual_server/smoke_test_result.json": "77367fd71fb268456789f563fc5c000d0221625e16f17db3962e394a397a5cf0",
+    "yamcs/actual_server/six_case_equivalence/outputs/score_equivalence_report.json": "bd396eee8b618e6734ac0e6e9106655f14a5e40c9436aa1a14eb892550f3fb4a",
+    "yamcs/actual_server/six_case_equivalence/readiness_failure_forensic_report.md": "3bb6a14642cb854e57c8255c58e96bade4c06f6b9063560ce5eb0ede75452c82",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison.csv": "bd23a841b0db2a33b6981d049b82328e4f39388e07726574d5ba36286a7a5f4b",
+    "research/duration_dimensionality_population_comparison_v1/duration_summary.csv": "eee98642f11235d8f35c2fd2c7f493d1b88b81b6ea45eca480943d2b1b1e49eb",
+    "research/duration_dimensionality_population_comparison_v1/channel_count_summary.csv": "9338c426f34da16a4fc9f17b225585361d6d48d1bbaefd63830b3e5186753abc",
+    "research/duration_dimensionality_population_comparison_v1/duration_stratification.csv": "d923bf885cf4ea6232aae0fd3595a00d51a65f884b4de41733ae1dafd870af70",
+    "research/duration_dimensionality_population_comparison_v1/channel_count_stratification.csv": "10c8eec3d73e941918d19a878c74ea6aa6337e1fba1dfef8f2210cbf4c620016",
+    "research/duration_dimensionality_population_comparison_v1/effect_sizes.csv": "e424ae29bf7d0347dc22f1c660f737a6d88778a1b19c061a2457646f370b67cd",
+    "research/duration_dimensionality_population_comparison_v1/distribution_comparison.csv": "1213e6c32fe77105ed3bace0f94ad14d833b9aa9603f11efc8b89f4862e1484b",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_report.json": "43faafc3f0d07b4d3db37a5d0cbbefc442c2d8f89b290fe9b77eaf10b842d01f",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_interpretation.md": "45b06fc57b27858b04b8df6bf2aeeb4db92bdd1538cd11f1681d7f9721dd037a",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_manifest.json": "c4d06189f1c61fd245b238b4b0a3b1dd7163169d0cef0dcaa2870138c0b05e15",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_reproducibility.json": "79db32ef971150c51d6cb0258c5f712de35d99a794d237e8b2d1bee493b2ab52"
+  },
+  "protected_hashes_after": {
+    "inspection/class3_detector_v1.py": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+    "inspection/class3_detector_v2/class3_detector_v2.py": "d736522523d769af13e173c13758623c161660df6ce6a3133167a3da78c7f044",
+    "inspection/class3_detector_results.csv": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+    "inspection/class3_detector_evaluation.csv": "68d6795473e114cadd1dd942f97844adddd35c40a38eec7eb653f8b421e619a1",
+    "inspection/class3_detector_v1_broader_evaluation_v1/broader_v1_evaluation.csv": "7c9eaabe383fe8b0352bf024ea0231b4568f110dc1e646aa07936288eb07c239",
+    "inspection/class3_detector_v1_broader_evaluation_v1/broader_v1_event_results.csv": "af2f3b8c6fec7bee831c3542968bb3a3e06c4202a1b98bd827474100ab2cbc10",
+    "inspection/esa_broader_control_characterization_v1/feature_table.csv": "c8bec2da7c059943fd2230620f861a4889cd57c900c6ff3b58021798fe8c45d1",
+    "inspection/esa_broader_control_characterization_v1/control_sampling_frame.csv": "3061c14fc314092911f346dd3c55663dff8abf6bd6f4e726ae1fbaef4f4407db",
+    "inspection/mission1/labels.csv": "1564d630f1ec1387d699ec81531ce57118051a220c8b7cba050a446a652b9082",
+    "inspection/mission1/anomaly_types.csv": "e0cadee4ee9697c5ca8d4f9e81067454d7d7a00d063ee0de33cbc77660eec8bc",
+    "inspection/mission1/channels.csv": "27a4d6819642effc2a590d49e5bd2c7a915c06a1eb78502c34bed055d1c76d5d",
+    "external/opssat-ad/data/raw/dataset.csv": "da20bc4bd3f30a3302ce06fe6a073bea6f036b297a92e83311d3f83b9c5e619b",
+    "external/opssat-ad/data/raw/segments.csv": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+    "yamcs/actual_server/smoke_test_result.json": "77367fd71fb268456789f563fc5c000d0221625e16f17db3962e394a397a5cf0",
+    "yamcs/actual_server/six_case_equivalence/outputs/score_equivalence_report.json": "bd396eee8b618e6734ac0e6e9106655f14a5e40c9436aa1a14eb892550f3fb4a",
+    "yamcs/actual_server/six_case_equivalence/readiness_failure_forensic_report.md": "3bb6a14642cb854e57c8255c58e96bade4c06f6b9063560ce5eb0ede75452c82",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison.csv": "bd23a841b0db2a33b6981d049b82328e4f39388e07726574d5ba36286a7a5f4b",
+    "research/duration_dimensionality_population_comparison_v1/duration_summary.csv": "eee98642f11235d8f35c2fd2c7f493d1b88b81b6ea45eca480943d2b1b1e49eb",
+    "research/duration_dimensionality_population_comparison_v1/channel_count_summary.csv": "9338c426f34da16a4fc9f17b225585361d6d48d1bbaefd63830b3e5186753abc",
+    "research/duration_dimensionality_population_comparison_v1/duration_stratification.csv": "d923bf885cf4ea6232aae0fd3595a00d51a65f884b4de41733ae1dafd870af70",
+    "research/duration_dimensionality_population_comparison_v1/channel_count_stratification.csv": "10c8eec3d73e941918d19a878c74ea6aa6337e1fba1dfef8f2210cbf4c620016",
+    "research/duration_dimensionality_population_comparison_v1/effect_sizes.csv": "e424ae29bf7d0347dc22f1c660f737a6d88778a1b19c061a2457646f370b67cd",
+    "research/duration_dimensionality_population_comparison_v1/distribution_comparison.csv": "1213e6c32fe77105ed3bace0f94ad14d833b9aa9603f11efc8b89f4862e1484b",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_report.json": "43faafc3f0d07b4d3db37a5d0cbbefc442c2d8f89b290fe9b77eaf10b842d01f",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_interpretation.md": "45b06fc57b27858b04b8df6bf2aeeb4db92bdd1538cd11f1681d7f9721dd037a",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_manifest.json": "c4d06189f1c61fd245b238b4b0a3b1dd7163169d0cef0dcaa2870138c0b05e15",
+    "research/duration_dimensionality_population_comparison_v1/population_comparison_reproducibility.json": "79db32ef971150c51d6cb0258c5f712de35d99a794d237e8b2d1bee493b2ab52"
+  },
+  "file_hashes": [
+    {
+      "path": "build_consolidation.py",
+      "sha256": "f2fdbb938700d9f8dae72e89a92f43cbe40b607f917978b270c6bc86ff970438",
+      "size": 57740
+    },
+    {
+      "path": "canonical_results.csv",
+      "sha256": "a6968817bf9705916af469caa53ffc7d7e22b2e4d5bc985d152ccf9d79c532b0",
+      "size": 17670
+    },
+    {
+      "path": "claim_evidence_matrix.csv",
+      "sha256": "e87f89f0e3ae10de9a5f9c8b818723131bae5324e5085c266d7059e51f82e592",
+      "size": 16636
+    },
+    {
+      "path": "experiment_registry.csv",
+      "sha256": "b15d268b423e11a48fbcd1ef5b387fd1789eef7f97d32b2e42d3f4d0fd183f4b",
+      "size": 14976
+    },
+    {
+      "path": "external_review_packet/00_REVIEW_INSTRUCTIONS.md",
+      "sha256": "7d6117fdb69dea9651751a8e81aece9f9e1ece373aba7938230305d1d1e3e43d",
+      "size": 2731
+    },
+    {
+      "path": "external_review_packet/01_EXECUTIVE_SUMMARY.md",
+      "sha256": "5d94a3b0645285ba572fb2a32b70ab109718e7c608370a65c122974ad132fbe4",
+      "size": 7857
+    },
+    {
+      "path": "external_review_packet/02_EXPERIMENT_REGISTRY.csv",
+      "sha256": "b15d268b423e11a48fbcd1ef5b387fd1789eef7f97d32b2e42d3f4d0fd183f4b",
+      "size": 14976
+    },
+    {
+      "path": "external_review_packet/03_CANONICAL_RESULTS.csv",
+      "sha256": "a6968817bf9705916af469caa53ffc7d7e22b2e4d5bc985d152ccf9d79c532b0",
+      "size": 17670
+    },
+    {
+      "path": "external_review_packet/04_CLAIM_EVIDENCE_MATRIX.csv",
+      "sha256": "e87f89f0e3ae10de9a5f9c8b818723131bae5324e5085c266d7059e51f82e592",
+      "size": 16636
+    },
+    {
+      "path": "external_review_packet/05_V1_EVIDENCE.md",
+      "sha256": "7fca32cd1ea5a09dce50494d86e8978b59799853ab88b0f5bb5d5b36fea86475",
+      "size": 3192
+    },
+    {
+      "path": "external_review_packet/06_V2_EVIDENCE.md",
+      "sha256": "805793f9085c0407a26dae7e2e758322e9394bf3b2b9446100b32db5090ffafc",
+      "size": 2045
+    },
+    {
+      "path": "external_review_packet/07_OPSSAT_EVIDENCE.md",
+      "sha256": "97802692234a57ec81bc695e201bcf50e9e8f8e8b03bdfbf72ad2e27ff98d138",
+      "size": 1136
+    },
+    {
+      "path": "external_review_packet/08_YAMCS_EVIDENCE.md",
+      "sha256": "b815af74532afd728496d6d89b17778b6d25279653c99f221f3883bdee06ee20",
+      "size": 1907
+    },
+    {
+      "path": "external_review_packet/09_FAILURE_MODES.csv",
+      "sha256": "a6d5926bead78bc3ab3c7daaa604db26d6f16d5f270296f58b0821ce25165d47",
+      "size": 5229
+    },
+    {
+      "path": "external_review_packet/10_REPRODUCIBILITY_INTEGRITY.md",
+      "sha256": "9c1a7d2bfc6d664265d98fa79a3b10cfc8a9bbefe159558e941f7a082c27e7db",
+      "size": 1917
+    },
+    {
+      "path": "external_review_packet/11_REVIEWER_ATTACK_SURFACE.csv",
+      "sha256": "fcefee8831295f2f9e21235a98c8872cdbc8988580922c2ca2bdc4545309ccd9",
+      "size": 5617
+    },
+    {
+      "path": "external_review_packet/12_PAPER_STORY.md",
+      "sha256": "fb4363e4e0adf9a3a1c8ac90189028ce3aa5c1bc89d7ecdae0b6e3c5de028e24",
+      "size": 8506
+    },
+    {
+      "path": "external_review_packet/13_FIGURE_TABLE_PLAN.md",
+      "sha256": "9b9b6636fbcbb50730584b997bf49112798e55960fa41cdda3c070c7e1a69631",
+      "size": 2543
+    },
+    {
+      "path": "external_review_packet/14_DURATION_DIMENSIONALITY_ANALYSIS.md",
+      "sha256": "3dcc595aeccdee66bc4e81e3f6d6c819da424439f64be6e582acfb51134f16aa",
+      "size": 3227
+    },
+    {
+      "path": "external_review_packet/14_DURATION_DIMENSIONALITY_POPULATION_COMPARISON.md",
+      "sha256": "4403256626053218fa30751366a0d7e9ad58434674c7aba26ce71486d752faf1",
+      "size": 1892
+    },
+    {
+      "path": "external_review_packet/15_PAPER_SAFE_CLAIMS.md",
+      "sha256": "78d0e9508bf4419022c0e4790482560374ea40ed8cc71660930659bd42d99eb3",
+      "size": 1463
+    },
+    {
+      "path": "external_review_packet.zip",
+      "sha256": "291ac897ac96dbb546648c50e19efa44917723fd66777f572927bb595633673d",
+      "size": 37237
+    },
+    {
+      "path": "external_review_status.md",
+      "sha256": "56b3ed78f7dfed3892ad7ea940ae262fd1ae39628ff2d68fb63b05067bd8fd24",
+      "size": 644
+    },
+    {
+      "path": "failure_mode_taxonomy.csv",
+      "sha256": "a6d5926bead78bc3ab3c7daaa604db26d6f16d5f270296f58b0821ce25165d47",
+      "size": 5229
+    },
+    {
+      "path": "final_figure_table_plan.md",
+      "sha256": "c150d2ab74d1720660295bc71c034e8117dc208d9a1daed7e77b65e958ebcec1",
+      "size": 2188
+    },
+    {
+      "path": "final_paper_evidence_map.md",
+      "sha256": "7e94a9250c25c0607863491756a9d80a80d1ea2e06160ccd121626f6cc5c5161",
+      "size": 2972
+    },
+    {
+      "path": "finalize_package_hashes_once.py",
+      "sha256": "f73753a2ab9e4fb42137c25293efcc6946d7d12b4515ca817c84e35167bbec33",
+      "size": 1266
+    },
+    {
+      "path": "integrate_population_comparison_freeze.py",
+      "sha256": "93791ce9fe710a6cca8cc39198da3ee78dc6aa5739408b88e3d5aa1a76a629f3",
+      "size": 28454
+    },
+    {
+      "path": "integrity_verification.json",
+      "sha256": "f491686f11adbe66908657e5eb334d433252bfa78367cf991130ccfdd6057fd5",
+      "size": 3629
+    },
+    {
+      "path": "opssat_evidence_summary.md",
+      "sha256": "97802692234a57ec81bc695e201bcf50e9e8f8e8b03bdfbf72ad2e27ff98d138",
+      "size": 1136
+    },
+    {
+      "path": "package_file_hashes.json",
+      "sha256": "607d61be604ffcbb3c6ce6b3ce24f51304e2ce8811820110c3acbe7b2dd53039",
+      "size": 7084
+    },
+    {
+      "path": "paper_figures_tables_plan.md",
+      "sha256": "9b9b6636fbcbb50730584b997bf49112798e55960fa41cdda3c070c7e1a69631",
+      "size": 2543
+    },
+    {
+      "path": "paper_safe_claims.md",
+      "sha256": "78d0e9508bf4419022c0e4790482560374ea40ed8cc71660930659bd42d99eb3",
+      "size": 1463
+    },
+    {
+      "path": "paper_story_v1.md",
+      "sha256": "fb4363e4e0adf9a3a1c8ac90189028ce3aa5c1bc89d7ecdae0b6e3c5de028e24",
+      "size": 8506
+    },
+    {
+      "path": "reproducibility_integrity_summary.md",
+      "sha256": "9c1a7d2bfc6d664265d98fa79a3b10cfc8a9bbefe159558e941f7a082c27e7db",
+      "size": 1917
+    },
+    {
+      "path": "reviewer_attack_surface.csv",
+      "sha256": "fcefee8831295f2f9e21235a98c8872cdbc8988580922c2ca2bdc4545309ccd9",
+      "size": 5617
+    },
+    {
+      "path": "source_artifact_inventory.json",
+      "sha256": "85469011bf66f6709a246f9a4888a3e9f42cfc0d05e4d239be1423ac1c6c82dd",
+      "size": 2423
+    },
+    {
+      "path": "update_final_freeze.py",
+      "sha256": "8c04d0145c6be54247a46be190489a75adcd4f797413cc4738d988130a78d261",
+      "size": 24713
+    },
+    {
+      "path": "v1_evidence_summary.md",
+      "sha256": "7fca32cd1ea5a09dce50494d86e8978b59799853ab88b0f5bb5d5b36fea86475",
+      "size": 3192
+    },
+    {
+      "path": "v2_evidence_summary.md",
+      "sha256": "805793f9085c0407a26dae7e2e758322e9394bf3b2b9446100b32db5090ffafc",
+      "size": 2045
+    },
+    {
+      "path": "yamcs_evidence_summary.md",
+      "sha256": "b815af74532afd728496d6d89b17778b6d25279653c99f221f3883bdee06ee20",
+      "size": 1907
+    }
+  ],
+  "file_hash_scope": "All package files except this self-referential manifest."
+}

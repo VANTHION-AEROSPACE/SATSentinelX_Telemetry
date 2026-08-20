@@ -1,0 +1,43 @@
+{
+  "case_id": "case_03_medium_class3",
+  "source_event_id": "id_172",
+  "case_type": "MEDIUM_CLASS3",
+  "source_type": "ESA_CLASS3",
+  "source_dataset": "ESA Mission-1 reconstructed selected-channel telemetry",
+  "start_time": "2012-09-19T13:42:51",
+  "end_time": "2012-09-19T13:43:09",
+  "duration_seconds": 18.0,
+  "channel_count": 6,
+  "channel_list": [
+    41,
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "dimensionality": "Multivariate",
+  "locality": "Global",
+  "selection_basis": "Established MEDIUM Class-3 event in pre-existing inventory; selected by morphology, not by score.",
+  "source_metadata": {
+    "category": "Anomaly",
+    "class": "class_3"
+  },
+  "detector_version": "class3_detector_v1.py",
+  "detector_hash": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+  "source_file_manifest": {
+    "channel_41": "8f85fa88527ba4d326a0115c6ce0507c51fa611029e0ecfb63a0180a2e693a63",
+    "channel_42": "8ece634f55e7a3a4122dbe2570b9d0cf220615609bc88be91a58225c729eaf5d",
+    "channel_43": "69d2df72e4f015a95982efc5be1df5b6557c6be5d832e4ca37daa74272edcc7a",
+    "channel_44": "06a27575182a51665994ac669bd38a90e4a159fdd3dd17fbc9028a98d7bc82f5",
+    "channel_45": "b1320c7212c7b8fa5e9795921e3bd34d4db2b3c727b8bf20e3d8f3a4b57d2045",
+    "channel_46": "2bdaf17dbe74479c55357d7267c60dc960e407a846bbe159bcd625c3be9a520e"
+  },
+  "replay_configuration": {
+    "context_seconds": 3600.0,
+    "speed_factor": 3600.0,
+    "parameter_mapping": "E:\\SATSentinel-RealTelemetry\\yamcs\\yamcs_config\\parameter_mapping.json",
+    "mode": "accelerated deterministic local Yamcs parameter replay"
+  },
+  "expected_output_artifact": "E:\\SATSentinel-RealTelemetry\\yamcs\\outputs\\case_03_medium_class3\\detector_event_evidence.csv"
+}

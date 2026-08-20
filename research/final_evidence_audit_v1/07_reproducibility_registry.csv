@@ -1,0 +1,9 @@
+experiment_id,runner,rerun_count,hash_method,result_identity,status,notes
+E01,reconstruction/inspection manifests,artifact verification,SHA-256 where manifested,source hashes stable,PASS,No rerun requested
+E03,evaluate_class3_detector_v1.py,existing frozen run,source/output hashes,frozen output retained,PASS,Do not overwrite
+E05,class3_regime_controls.py,recorded deterministic rerun,SHA-256,reports reproducible,PASS,See regime report
+E06,esa_class3_control_characterization_v1 runner,recorded,SHA-256,characterization outputs stable,PASS,Detector-independent
+E07,class3_detector_v2 runner,recorded,SHA-256,v2 package reproducible,PASS,Separate artifact
+E08,run_esa_broader_control_characterization.py,2,SHA-256,27 package files identical,PASS,170 controls; zero overlap
+E09,run_broader_v1_evaluation.py,2 consecutive complete runs,SHA-256,32 files identical at comparison,PASS,Primary all 170 retained
+E10,run_opssat_protocol_experiment.py,recorded deterministic rerun,SHA-256,protocol outputs reproducible,PASS,Not direct v1 validation

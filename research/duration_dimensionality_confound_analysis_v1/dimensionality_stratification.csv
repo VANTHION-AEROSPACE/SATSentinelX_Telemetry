@@ -1,0 +1,4 @@
+stratum,n,detected_count,detection_rate,median_score,mean_score,median_duration_seconds,median_channel_count,sparse_flag,stratification,population
+1-6,104,3,0.0288461538461538,0,0.0198717948717949,18630,0,False,channel_bucket,controls
+7-12,32,3,0.09375,0.275,0.285819128787879,149186.253,12,False,channel_bucket,controls
+13-26,34,34,1,0.517032967032967,0.528455692644951,442966.533,26,False,channel_bucket,controls

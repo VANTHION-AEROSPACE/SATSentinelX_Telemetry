@@ -1,0 +1,3 @@
+artifact_a,artifact_b,metric,value_a,value_b,possible_reason,resolution,confidence
+"class3_detector_evaluation_report.json","broader_v1_evaluation_report.json",FPR,0.3667,0.2353,"Different control populations and protocols","Retain both; broader v1 is newer stress evaluation, not a replacement of initial result",high
+"class3_detector_evaluation_report.json","class3_detector_v2/v2_interpretation.md",TP,30,29,"Different detector and experimental artifact","Retain both; v2 is not replacement",high

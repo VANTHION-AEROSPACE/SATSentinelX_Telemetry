@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem xmlns="http://www.omg.org/spec/XTCE/20180204" name="SATSENTINEL_X">
+  <TelemetryMetaData>
+    <ParameterTypeSet>
+      <FloatParameterType name="esa_float64" sizeInBits="64">
+        <UnitSet><Unit>source-unit-unchanged</Unit></UnitSet>
+        <FloatDataEncoding sizeInBits="64" encoding="IEEE754_1985"/>
+      </FloatParameterType>
+    </ParameterTypeSet>
+    <ParameterSet>
+      <Parameter name="channel_12" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_13" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_17" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_18" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_19" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_20" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_25" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_26" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_27" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_28" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_34" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_35" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_36" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_37" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_41" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_42" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_43" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_44" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_45" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_46" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_47" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_48" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_49" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_50" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_51" parameterTypeRef="esa_float64"/>
+      <Parameter name="channel_52" parameterTypeRef="esa_float64"/>
+    </ParameterSet>
+  </TelemetryMetaData>
+</SpaceSystem>

@@ -1,0 +1,9 @@
+population,score_variable,structural_variable,method,n,statistic,p_value_descriptive,interpretation
+controls,detector_score,duration,pearson,170,0.360762804273939,1.34612171787565e-06,descriptive association; not causal
+controls,detector_score,duration,spearman,170,0.444362444277422,1.27750733254859e-09,descriptive association; not causal
+controls,detector_score,channel_count,pearson,170,0.910359929053663,2.83635516990258e-66,descriptive association; not causal
+controls,detector_score,channel_count,spearman,170,0.892711299467503,4.77421308551389e-60,descriptive association; not causal
+controls,detector_score,log_duration,pearson,168,0.445334917742878,1.4608215736282e-09,descriptive association; not causal
+controls,detector_score,log_duration,spearman,168,0.437445284391718,3.04611905731487e-09,descriptive association; not causal
+controls,detector_score,log_channel_count,pearson,93,0.815594562764114,2.42937674049188e-23,descriptive association; not causal
+controls,detector_score,log_channel_count,spearman,93,0.802180571254232,4.29994835184413e-22,descriptive association; not causal

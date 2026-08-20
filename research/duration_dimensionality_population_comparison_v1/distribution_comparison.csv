@@ -1,0 +1,3 @@
+variable,positive_n,control_n,mann_whitney_u,mann_whitney_p_value,ks_statistic,ks_p_value,histogram_overlap_coefficient_100_bins,interpretation
+duration_seconds,30,170,956,4.9685224334059e-08,0.654901960784314,4.97894461405834e-11,0.62156862745098,non-parametric descriptive comparison; not causal
+channel_count,30,170,3257.5,0.0120307408219146,0.476470588235294,8.55017753809933e-06,0.390196078431373,non-parametric descriptive comparison; not causal

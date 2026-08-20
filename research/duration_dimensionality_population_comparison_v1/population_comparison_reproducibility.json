@@ -1,0 +1,17 @@
+{
+  "analysis_version": "duration_dimensionality_population_comparison_v1",
+  "compared_previous_output_hashes": true,
+  "output_sha256": {
+    "channel_count_stratification.csv": "10c8eec3d73e941918d19a878c74ea6aa6337e1fba1dfef8f2210cbf4c620016",
+    "channel_count_summary.csv": "9338c426f34da16a4fc9f17b225585361d6d48d1bbaefd63830b3e5186753abc",
+    "distribution_comparison.csv": "1213e6c32fe77105ed3bace0f94ad14d833b9aa9603f11efc8b89f4862e1484b",
+    "duration_stratification.csv": "d923bf885cf4ea6232aae0fd3595a00d51a65f884b4de41733ae1dafd870af70",
+    "duration_summary.csv": "eee98642f11235d8f35c2fd2c7f493d1b88b81b6ea45eca480943d2b1b1e49eb",
+    "effect_sizes.csv": "e424ae29bf7d0347dc22f1c660f737a6d88778a1b19c061a2457646f370b67cd",
+    "population_comparison.csv": "bd23a841b0db2a33b6981d049b82328e4f39388e07726574d5ba36286a7a5f4b",
+    "population_comparison_interpretation.md": "45b06fc57b27858b04b8df6bf2aeeb4db92bdd1538cd11f1681d7f9721dd037a",
+    "population_comparison_report.json": "43faafc3f0d07b4d3db37a5d0cbbefc442c2d8f89b290fe9b77eaf10b842d01f"
+  },
+  "protected_integrity": true,
+  "reproducibility_status": "PASS"
+}

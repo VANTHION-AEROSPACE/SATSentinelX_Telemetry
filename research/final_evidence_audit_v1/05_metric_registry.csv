@@ -1,0 +1,17 @@
+metric_name,value,experiment,population,positive_definition,negative_definition,threshold,primary_or_secondary,source_artifact,interpretation,caveat
+TP,30,broader v1,30 Class-3 + 170 controls,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,All positives detected,Not future recall
+FP,40,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,40 controls detected,Controls not proven nominal
+TN,130,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,130 controls not detected,Not confirmed healthy TN
+FN,0,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,No missed evaluated positives,Small positive n
+precision,.4286,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,Detection precision against label-negative controls,Not nominal PPV
+recall,1.0000,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,30/30 positives detected,Not operational sensitivity
+specificity,.7647,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,Control non-detection rate,Label-negative specificity only
+FPR,.2353,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,40/170 control detections,Do not call low
+F1,.6000,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,Combined threshold metric,Protocol-dependent
+balanced_accuracy,.8824,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,frozen all-detected,primary,broader_v1_evaluation_report.json,Average recall and label-negative specificity,Not deployment evidence
+ROC-AUC,.9924,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,continuous v1 score,secondary,broader_v1_evaluation_report.json,Strong ranking separation,Does not imply low threshold FPR
+PR-AUC,.9794,broader v1,same,Class-3,LABEL_NEGATIVE_UNLABELLED,continuous v1 score,secondary,broader_v1_evaluation_report.json,Strong ranking separation,Prevalence/sample dependent
+FPR,.0118,broader v1 strong-only,same,Class-3,LABEL_NEGATIVE_UNLABELLED,strong evidence classification,secondary,broader_v1_evaluation_report.json,Low secondary FPR,Not optimized or primary
+recall,.9667,broader v1 strong-only,same,Class-3,LABEL_NEGATIVE_UNLABELLED,strong evidence classification,secondary,broader_v1_evaluation_report.json,29/30 positives detected,Secondary operating point
+FPR,.3667,initial v1,30+30 controls,Class-3,label-negative/unlabelled,frozen all-detected,primary,class3_detector_evaluation_report.json,Initial control FPR,Different sampling protocol
+ROC-AUC,.4833,OPSSAT protocol,529 test segments,anomaly segments,nominal segments,99th percentile train nominal robust_max,primary,opssat_protocol_report.json,No useful ranking discrimination,Not direct v1 validation

@@ -1,0 +1,28 @@
+{
+  "status": "YAMCS_SERVER_BLOCKED",
+  "actual_yamcs_server_used": false,
+  "yamcs_version": null,
+  "java_version": "OpenJDK 17.0.17 (Temurin)",
+  "docker_version": "Docker 28.0.1",
+  "docker_daemon": "unavailable",
+  "docker_service": "com.docker.service STOPPED / Manual",
+  "exact_failures": [
+    "docker pull yamcs/example-simulation:5.13.2 failed: open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.",
+    "docker desktop start timed out; Docker Desktop could not create C:\\Users\\Aaditya\\AppData\\Local\\Docker\\log\\host files: Access is denied."
+  ],
+  "six_cases_attempted": [
+    "id_118",
+    "id_109",
+    "id_172",
+    "id_185",
+    "control_0001",
+    "control_0069"
+  ],
+  "six_cases_successfully_replayed": [],
+  "real_esa_telemetry_ready": true,
+  "validated_adapter_ready": true,
+  "actual_server_pipeline_executed": false,
+  "detector_v1_modified": false,
+  "recommended_resolution": "Start Docker Desktop with a user profile that can write its host log directory, or install an official Yamcs distribution locally with Java 17; then pull/run yamcs/example-simulation:5.13.2 or an official pinned Yamcs server image and continue the actual-server integration.",
+  "no_yamcs_result_fabricated": true
+}

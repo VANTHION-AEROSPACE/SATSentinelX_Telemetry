@@ -1,0 +1,190 @@
+{
+  "mapping_version": "esa_yamcs_parameter_mapping_v1",
+  "timestamp_convention": "UTC timezone-naive ISO-8601",
+  "missing_value_handling": "NaN preserved as missing; no imputation or value substitution",
+  "value_conversion": "identity float conversion from selected ESA channel pickle; no unit/scale transformation",
+  "channels": [
+    {
+      "esa_channel": 12,
+      "source_parameter": "channel_12",
+      "yamcs_parameter": "esa.channel_12",
+      "detector_channel": 12,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 13,
+      "source_parameter": "channel_13",
+      "yamcs_parameter": "esa.channel_13",
+      "detector_channel": 13,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 17,
+      "source_parameter": "channel_17",
+      "yamcs_parameter": "esa.channel_17",
+      "detector_channel": 17,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 18,
+      "source_parameter": "channel_18",
+      "yamcs_parameter": "esa.channel_18",
+      "detector_channel": 18,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 19,
+      "source_parameter": "channel_19",
+      "yamcs_parameter": "esa.channel_19",
+      "detector_channel": 19,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 20,
+      "source_parameter": "channel_20",
+      "yamcs_parameter": "esa.channel_20",
+      "detector_channel": 20,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 25,
+      "source_parameter": "channel_25",
+      "yamcs_parameter": "esa.channel_25",
+      "detector_channel": 25,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 26,
+      "source_parameter": "channel_26",
+      "yamcs_parameter": "esa.channel_26",
+      "detector_channel": 26,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 27,
+      "source_parameter": "channel_27",
+      "yamcs_parameter": "esa.channel_27",
+      "detector_channel": 27,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 28,
+      "source_parameter": "channel_28",
+      "yamcs_parameter": "esa.channel_28",
+      "detector_channel": 28,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 34,
+      "source_parameter": "channel_34",
+      "yamcs_parameter": "esa.channel_34",
+      "detector_channel": 34,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 35,
+      "source_parameter": "channel_35",
+      "yamcs_parameter": "esa.channel_35",
+      "detector_channel": 35,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 36,
+      "source_parameter": "channel_36",
+      "yamcs_parameter": "esa.channel_36",
+      "detector_channel": 36,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 37,
+      "source_parameter": "channel_37",
+      "yamcs_parameter": "esa.channel_37",
+      "detector_channel": 37,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 41,
+      "source_parameter": "channel_41",
+      "yamcs_parameter": "esa.channel_41",
+      "detector_channel": 41,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 42,
+      "source_parameter": "channel_42",
+      "yamcs_parameter": "esa.channel_42",
+      "detector_channel": 42,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 43,
+      "source_parameter": "channel_43",
+      "yamcs_parameter": "esa.channel_43",
+      "detector_channel": 43,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 44,
+      "source_parameter": "channel_44",
+      "yamcs_parameter": "esa.channel_44",
+      "detector_channel": 44,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 45,
+      "source_parameter": "channel_45",
+      "yamcs_parameter": "esa.channel_45",
+      "detector_channel": 45,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 46,
+      "source_parameter": "channel_46",
+      "yamcs_parameter": "esa.channel_46",
+      "detector_channel": 46,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 47,
+      "source_parameter": "channel_47",
+      "yamcs_parameter": "esa.channel_47",
+      "detector_channel": 47,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 48,
+      "source_parameter": "channel_48",
+      "yamcs_parameter": "esa.channel_48",
+      "detector_channel": 48,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 49,
+      "source_parameter": "channel_49",
+      "yamcs_parameter": "esa.channel_49",
+      "detector_channel": 49,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 50,
+      "source_parameter": "channel_50",
+      "yamcs_parameter": "esa.channel_50",
+      "detector_channel": 50,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 51,
+      "source_parameter": "channel_51",
+      "yamcs_parameter": "esa.channel_51",
+      "detector_channel": 51,
+      "unit_handling": "unchanged / source unit undocumented"
+    },
+    {
+      "esa_channel": 52,
+      "source_parameter": "channel_52",
+      "yamcs_parameter": "esa.channel_52",
+      "detector_channel": 52,
+      "unit_handling": "unchanged / source unit undocumented"
+    }
+  ]
+}

@@ -1,0 +1,438 @@
+{
+  "analysis_version": "duration_dimensionality_confound_analysis_v1",
+  "association_statistics": [
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "pearson",
+      "n": 170,
+      "p_value_descriptive": 1.3461217178756496e-06,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.3607628042739389,
+      "structural_variable": "duration"
+    },
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "spearman",
+      "n": 170,
+      "p_value_descriptive": 1.27750733254859e-09,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.44436244427742194,
+      "structural_variable": "duration"
+    },
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "pearson",
+      "n": 170,
+      "p_value_descriptive": 2.8363551699025796e-66,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.9103599290536631,
+      "structural_variable": "channel_count"
+    },
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "spearman",
+      "n": 170,
+      "p_value_descriptive": 4.774213085513893e-60,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.8927112994675029,
+      "structural_variable": "channel_count"
+    },
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "pearson",
+      "n": 168,
+      "p_value_descriptive": 1.460821573628201e-09,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.44533491774287826,
+      "structural_variable": "log_duration"
+    },
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "spearman",
+      "n": 168,
+      "p_value_descriptive": 3.046119057314866e-09,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.4374452843917178,
+      "structural_variable": "log_duration"
+    },
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "pearson",
+      "n": 93,
+      "p_value_descriptive": 2.4293767404918773e-23,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.8155945627641139,
+      "structural_variable": "log_channel_count"
+    },
+    {
+      "interpretation": "descriptive association; not causal",
+      "method": "spearman",
+      "n": 93,
+      "p_value_descriptive": 4.299948351844135e-22,
+      "population": "controls",
+      "score_variable": "detector_score",
+      "statistic": 0.8021805712542324,
+      "structural_variable": "log_channel_count"
+    }
+  ],
+  "conclusion": "C",
+  "dimensionality_stratification": [
+    {
+      "detected_count": 3,
+      "detection_rate": 0.028846153846153848,
+      "mean_score": 0.01987179487179487,
+      "median_channel_count": 0.0,
+      "median_duration_seconds": 18630.0,
+      "median_score": 0.0,
+      "n": 104,
+      "population": "controls",
+      "sparse_flag": false,
+      "stratification": "channel_bucket",
+      "stratum": "1-6"
+    },
+    {
+      "detected_count": 3,
+      "detection_rate": 0.09375,
+      "mean_score": 0.2858191287878788,
+      "median_channel_count": 12.0,
+      "median_duration_seconds": 149186.253,
+      "median_score": 0.275,
+      "n": 32,
+      "population": "controls",
+      "sparse_flag": false,
+      "stratification": "channel_bucket",
+      "stratum": "7-12"
+    },
+    {
+      "detected_count": 34,
+      "detection_rate": 1.0,
+      "mean_score": 0.528455692644951,
+      "median_channel_count": 26.0,
+      "median_duration_seconds": 442966.533,
+      "median_score": 0.5170329670329671,
+      "n": 34,
+      "population": "controls",
+      "sparse_flag": false,
+      "stratification": "channel_bucket",
+      "stratum": "13-26"
+    }
+  ],
+  "duration_dimensionality_matrix": [
+    {
+      "channel_bucket": "13-26",
+      "detected_count": 33,
+      "detection_rate": 1.0,
+      "duration_bucket": "PERSISTENT",
+      "mean_score": 0.531742228785707,
+      "median_channel_count": 26,
+      "median_duration_seconds": 545682.786,
+      "median_score": 0.519230769230769,
+      "n": 33,
+      "sparse_flag": false
+    },
+    {
+      "channel_bucket": "1-6",
+      "detected_count": 3,
+      "detection_rate": 0.0441176470588235,
+      "duration_bucket": "PERSISTENT",
+      "mean_score": 0.0303921568627451,
+      "median_channel_count": 0,
+      "median_duration_seconds": 27045.0,
+      "median_score": 0.0,
+      "n": 68,
+      "sparse_flag": false
+    },
+    {
+      "channel_bucket": "7-12",
+      "detected_count": 3,
+      "detection_rate": 0.0967741935483871,
+      "duration_bucket": "PERSISTENT",
+      "mean_score": 0.285092864125122,
+      "median_channel_count": 12,
+      "median_duration_seconds": 157650.0,
+      "median_score": 0.275,
+      "n": 31,
+      "sparse_flag": false
+    },
+    {
+      "channel_bucket": "1-6",
+      "detected_count": 0,
+      "detection_rate": 0.0,
+      "duration_bucket": "MEDIUM",
+      "mean_score": 0.0,
+      "median_channel_count": 0,
+      "median_duration_seconds": 480.0,
+      "median_score": 0.0,
+      "n": 33,
+      "sparse_flag": false
+    },
+    {
+      "channel_bucket": "1-6",
+      "detected_count": 0,
+      "detection_rate": 0.0,
+      "duration_bucket": "LONG",
+      "mean_score": 0.0,
+      "median_channel_count": 6,
+      "median_duration_seconds": 2280.0,
+      "median_score": 0.0,
+      "n": 1,
+      "sparse_flag": true
+    },
+    {
+      "channel_bucket": "7-12",
+      "detected_count": 0,
+      "detection_rate": 0.0,
+      "duration_bucket": "LONG",
+      "mean_score": 0.308333333333333,
+      "median_channel_count": 12,
+      "median_duration_seconds": 942.378,
+      "median_score": 0.308333333333333,
+      "n": 1,
+      "sparse_flag": true
+    },
+    {
+      "channel_bucket": "1-6",
+      "detected_count": 0,
+      "detection_rate": 0.0,
+      "duration_bucket": "IMPULSIVE",
+      "mean_score": 0.0,
+      "median_channel_count": 2,
+      "median_duration_seconds": 0.0,
+      "median_score": 0.0,
+      "n": 2,
+      "sparse_flag": true
+    },
+    {
+      "channel_bucket": "13-26",
+      "detected_count": 1,
+      "detection_rate": 1.0,
+      "duration_bucket": "LONG",
+      "mean_score": 0.42,
+      "median_channel_count": 26,
+      "median_duration_seconds": 2942.244,
+      "median_score": 0.42,
+      "n": 1,
+      "sparse_flag": true
+    }
+  ],
+  "duration_stratification": [
+    {
+      "detected_count": 0,
+      "detection_rate": 0.0,
+      "mean_score": 0.0,
+      "median_channel_count": 2.0,
+      "median_duration_seconds": 0.0,
+      "median_score": 0.0,
+      "n": 2,
+      "population": "controls",
+      "sparse_flag": true,
+      "stratification": "duration_bucket",
+      "stratum": "IMPULSIVE"
+    },
+    {
+      "detected_count": 0,
+      "detection_rate": 0.0,
+      "mean_score": 0.0,
+      "median_channel_count": 0.0,
+      "median_duration_seconds": 480.0,
+      "median_score": 0.0,
+      "n": 33,
+      "population": "controls",
+      "sparse_flag": false,
+      "stratification": "duration_bucket",
+      "stratum": "MEDIUM"
+    },
+    {
+      "detected_count": 1,
+      "detection_rate": 0.3333333333333333,
+      "mean_score": 0.24277777777777776,
+      "median_channel_count": 12.0,
+      "median_duration_seconds": 2280.0,
+      "median_score": 0.3083333333333333,
+      "n": 3,
+      "population": "controls",
+      "sparse_flag": true,
+      "stratification": "duration_bucket",
+      "stratum": "LONG"
+    },
+    {
+      "detected_count": 39,
+      "detection_rate": 0.29545454545454547,
+      "mean_score": 0.2155457500338923,
+      "median_channel_count": 6.0,
+      "median_duration_seconds": 68387.25,
+      "median_score": 0.2166666666666666,
+      "n": 132,
+      "population": "controls",
+      "sparse_flag": false,
+      "stratification": "duration_bucket",
+      "stratum": "PERSISTENT"
+    }
+  ],
+  "fixed_population": {
+    "control_detection_count": 40,
+    "control_detection_rate": 0.23529411764705882,
+    "controls": 170,
+    "positives": 30,
+    "total": 200
+  },
+  "integrity": {
+    "external\\opssat-ad\\data\\raw\\dataset.csv": {
+      "after": "da20bc4bd3f30a3302ce06fe6a073bea6f036b297a92e83311d3f83b9c5e619b",
+      "before": "da20bc4bd3f30a3302ce06fe6a073bea6f036b297a92e83311d3f83b9c5e619b",
+      "unchanged": true
+    },
+    "external\\opssat-ad\\data\\raw\\segments.csv": {
+      "after": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+      "before": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+      "unchanged": true
+    },
+    "inspection\\class3_detector_evaluation.csv": {
+      "after": "68d6795473e114cadd1dd942f97844adddd35c40a38eec7eb653f8b421e619a1",
+      "before": "68d6795473e114cadd1dd942f97844adddd35c40a38eec7eb653f8b421e619a1",
+      "unchanged": true
+    },
+    "inspection\\class3_detector_results.csv": {
+      "after": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+      "before": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+      "unchanged": true
+    },
+    "inspection\\class3_detector_v1.py": {
+      "after": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+      "before": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+      "unchanged": true
+    },
+    "inspection\\class3_detector_v1_broader_evaluation_v1\\broader_v1_evaluation.csv": {
+      "after": "7c9eaabe383fe8b0352bf024ea0231b4568f110dc1e646aa07936288eb07c239",
+      "before": "7c9eaabe383fe8b0352bf024ea0231b4568f110dc1e646aa07936288eb07c239",
+      "unchanged": true
+    },
+    "inspection\\class3_detector_v1_broader_evaluation_v1\\broader_v1_event_results.csv": {
+      "after": "af2f3b8c6fec7bee831c3542968bb3a3e06c4202a1b98bd827474100ab2cbc10",
+      "before": "af2f3b8c6fec7bee831c3542968bb3a3e06c4202a1b98bd827474100ab2cbc10",
+      "unchanged": true
+    },
+    "inspection\\class3_detector_v2\\class3_detector_v2.py": {
+      "after": "d736522523d769af13e173c13758623c161660df6ce6a3133167a3da78c7f044",
+      "before": "d736522523d769af13e173c13758623c161660df6ce6a3133167a3da78c7f044",
+      "unchanged": true
+    },
+    "inspection\\esa_broader_control_characterization_v1\\control_sampling_frame.csv": {
+      "after": "3061c14fc314092911f346dd3c55663dff8abf6bd6f4e726ae1fbaef4f4407db",
+      "before": "3061c14fc314092911f346dd3c55663dff8abf6bd6f4e726ae1fbaef4f4407db",
+      "unchanged": true
+    },
+    "inspection\\esa_broader_control_characterization_v1\\feature_table.csv": {
+      "after": "c8bec2da7c059943fd2230620f861a4889cd57c900c6ff3b58021798fe8c45d1",
+      "before": "c8bec2da7c059943fd2230620f861a4889cd57c900c6ff3b58021798fe8c45d1",
+      "unchanged": true
+    },
+    "inspection\\mission1\\anomaly_types.csv": {
+      "after": "e0cadee4ee9697c5ca8d4f9e81067454d7d7a00d063ee0de33cbc77660eec8bc",
+      "before": "e0cadee4ee9697c5ca8d4f9e81067454d7d7a00d063ee0de33cbc77660eec8bc",
+      "unchanged": true
+    },
+    "inspection\\mission1\\channels.csv": {
+      "after": "27a4d6819642effc2a590d49e5bd2c7a915c06a1eb78502c34bed055d1c76d5d",
+      "before": "27a4d6819642effc2a590d49e5bd2c7a915c06a1eb78502c34bed055d1c76d5d",
+      "unchanged": true
+    },
+    "inspection\\mission1\\labels.csv": {
+      "after": "1564d630f1ec1387d699ec81531ce57118051a220c8b7cba050a446a652b9082",
+      "before": "1564d630f1ec1387d699ec81531ce57118051a220c8b7cba050a446a652b9082",
+      "unchanged": true
+    },
+    "yamcs\\actual_server\\six_case_equivalence\\outputs\\score_equivalence_report.json": {
+      "after": "bd396eee8b618e6734ac0e6e9106655f14a5e40c9436aa1a14eb892550f3fb4a",
+      "before": "bd396eee8b618e6734ac0e6e9106655f14a5e40c9436aa1a14eb892550f3fb4a",
+      "unchanged": true
+    },
+    "yamcs\\actual_server\\six_case_equivalence\\readiness_failure_forensic_report.md": {
+      "after": "3bb6a14642cb854e57c8255c58e96bade4c06f6b9063560ce5eb0ede75452c82",
+      "before": "3bb6a14642cb854e57c8255c58e96bade4c06f6b9063560ce5eb0ede75452c82",
+      "unchanged": true
+    },
+    "yamcs\\actual_server\\smoke_test_result.json": {
+      "after": "77367fd71fb268456789f563fc5c000d0221625e16f17db3962e394a397a5cf0",
+      "before": "77367fd71fb268456789f563fc5c000d0221625e16f17db3962e394a397a5cf0",
+      "unchanged": true
+    }
+  },
+  "limitations": [
+    "Controls are predetermined negative-unlabelled templates, not proven nominal telemetry.",
+    "Sparse strata are flagged and not interpreted as stable subgroup effects.",
+    "Associations and residuals are descriptive and do not establish causation or replace detector scores."
+  ],
+  "logistic_model_specification": "detected ~ log(duration_seconds) + log(channel_count)",
+  "logistic_model_status": "stable",
+  "residual_model": {
+    "descriptive_only": true,
+    "detector_output": false,
+    "specification": "score ~ 1 + log(duration_seconds) + log(channel_count)"
+  },
+  "runtime": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "python": "3.11.9"
+  },
+  "sensitivity_analysis": [
+    {
+      "detected_count": 40,
+      "detection_rate": 0.23529411764705882,
+      "mean_analysis_score": 0.17164924904592424,
+      "median_analysis_score": 0.0,
+      "model": "none",
+      "n": 170,
+      "note": "canonical broader-v1 control population",
+      "sensitivity": "all_controls_raw"
+    },
+    {
+      "detected_count": 40,
+      "detection_rate": 0.43478260869565216,
+      "mean_analysis_score": 0.3171779601935556,
+      "median_analysis_score": 0.3333333333333333,
+      "model": "none",
+      "n": 92,
+      "note": "excludes insufficient-telemetry controls; descriptive sensitivity",
+      "sensitivity": "sufficient_telemetry_raw"
+    },
+    {
+      "detected_count": 40,
+      "detection_rate": 0.43956043956043955,
+      "mean_analysis_score": 7.93016446160826e-18,
+      "median_analysis_score": 0.011152330467876947,
+      "model": "score ~ 1 + log_duration",
+      "n": 91,
+      "note": "residualized score; classifications unchanged",
+      "sensitivity": "duration_adjusted"
+    },
+    {
+      "detected_count": 40,
+      "detection_rate": 0.43956043956043955,
+      "mean_analysis_score": 1.2871266933841102e-16,
+      "median_analysis_score": -0.02461451152784444,
+      "model": "score ~ 1 + log_channel_count",
+      "n": 91,
+      "note": "residualized score; classifications unchanged",
+      "sensitivity": "dimensionality_adjusted"
+    },
+    {
+      "detected_count": 40,
+      "detection_rate": 0.43956043956043955,
+      "mean_analysis_score": 1.9764409888931357e-16,
+      "median_analysis_score": -0.025122754644155587,
+      "model": "score ~ 1 + log_duration + log_channel_count",
+      "n": 91,
+      "note": "residualized score; classifications unchanged",
+      "sensitivity": "both_adjusted"
+    }
+  ],
+  "strata_source": "existing control_sampling_frame.csv; bins reused exactly as stored"
+}

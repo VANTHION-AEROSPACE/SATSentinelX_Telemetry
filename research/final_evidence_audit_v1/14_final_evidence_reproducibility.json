@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "method": "two complete consolidation runs with SHA-256 comparison of generated structured outputs",
+  "generated_structured_outputs": "identical",
+  "source_artifacts_modified": false
+}

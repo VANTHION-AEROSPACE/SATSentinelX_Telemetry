@@ -1,0 +1,53 @@
+{
+  "analysis_version": "duration_dimensionality_confound_analysis_v1",
+  "compared_previous_output_hashes": true,
+  "output_sha256": {
+    "adjusted_score_analysis.csv": "4dce37788cd106269385c2c9d71804336b031a9b57f7b62fc2adeb95a9598bea",
+    "association_statistics.csv": "2098c87bf255a2406151669b7655bce49cbb59cc4ebc53cdcd7372afe7440f99",
+    "confound_analysis_interpretation.md": "63c324e90752cc77d89a6a91cda1e4af59e40adcc376d56a4d48ee510c9c6180",
+    "confound_analysis_report.json": "755f05f5108aaa9263ca2183fe6b9a7004def519d5e3541578cc33900b09c60c",
+    "control_structural_features.csv": "a143304d2a8ef16b50feec5c3d9a904022d08e7aa7bdd6176bb9412ba147f309",
+    "dimensionality_stratification.csv": "743e516b05656264f8c472eb54e45ee68d48c25667bcd3ad1b1e35cee5fd8ce5",
+    "duration_dimensionality_matrix.csv": "39e1d21dd75a28dd361bf190549f11cd9d478d9a4e49f6dbfa326e613e74099c",
+    "duration_stratification.csv": "5014b337904bd619ec26a310f47b43ca8cf7c5b0e636edd3422d2b2d78fd83c0",
+    "structural_model_results.csv": "62f156a99c8e3b138d4c3f070bc251c5eb46ddca7f3d1d9178ccd3af2cfa0f34"
+  },
+  "reproducibility_status": "PASS",
+  "source_integrity_unchanged": true,
+  "source_sha256_after": {
+    "external\\opssat-ad\\data\\raw\\dataset.csv": "da20bc4bd3f30a3302ce06fe6a073bea6f036b297a92e83311d3f83b9c5e619b",
+    "external\\opssat-ad\\data\\raw\\segments.csv": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+    "inspection\\class3_detector_evaluation.csv": "68d6795473e114cadd1dd942f97844adddd35c40a38eec7eb653f8b421e619a1",
+    "inspection\\class3_detector_results.csv": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+    "inspection\\class3_detector_v1.py": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+    "inspection\\class3_detector_v1_broader_evaluation_v1\\broader_v1_evaluation.csv": "7c9eaabe383fe8b0352bf024ea0231b4568f110dc1e646aa07936288eb07c239",
+    "inspection\\class3_detector_v1_broader_evaluation_v1\\broader_v1_event_results.csv": "af2f3b8c6fec7bee831c3542968bb3a3e06c4202a1b98bd827474100ab2cbc10",
+    "inspection\\class3_detector_v2\\class3_detector_v2.py": "d736522523d769af13e173c13758623c161660df6ce6a3133167a3da78c7f044",
+    "inspection\\esa_broader_control_characterization_v1\\control_sampling_frame.csv": "3061c14fc314092911f346dd3c55663dff8abf6bd6f4e726ae1fbaef4f4407db",
+    "inspection\\esa_broader_control_characterization_v1\\feature_table.csv": "c8bec2da7c059943fd2230620f861a4889cd57c900c6ff3b58021798fe8c45d1",
+    "inspection\\mission1\\anomaly_types.csv": "e0cadee4ee9697c5ca8d4f9e81067454d7d7a00d063ee0de33cbc77660eec8bc",
+    "inspection\\mission1\\channels.csv": "27a4d6819642effc2a590d49e5bd2c7a915c06a1eb78502c34bed055d1c76d5d",
+    "inspection\\mission1\\labels.csv": "1564d630f1ec1387d699ec81531ce57118051a220c8b7cba050a446a652b9082",
+    "yamcs\\actual_server\\six_case_equivalence\\outputs\\score_equivalence_report.json": "bd396eee8b618e6734ac0e6e9106655f14a5e40c9436aa1a14eb892550f3fb4a",
+    "yamcs\\actual_server\\six_case_equivalence\\readiness_failure_forensic_report.md": "3bb6a14642cb854e57c8255c58e96bade4c06f6b9063560ce5eb0ede75452c82",
+    "yamcs\\actual_server\\smoke_test_result.json": "77367fd71fb268456789f563fc5c000d0221625e16f17db3962e394a397a5cf0"
+  },
+  "source_sha256_before": {
+    "external\\opssat-ad\\data\\raw\\dataset.csv": "da20bc4bd3f30a3302ce06fe6a073bea6f036b297a92e83311d3f83b9c5e619b",
+    "external\\opssat-ad\\data\\raw\\segments.csv": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+    "inspection\\class3_detector_evaluation.csv": "68d6795473e114cadd1dd942f97844adddd35c40a38eec7eb653f8b421e619a1",
+    "inspection\\class3_detector_results.csv": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+    "inspection\\class3_detector_v1.py": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+    "inspection\\class3_detector_v1_broader_evaluation_v1\\broader_v1_evaluation.csv": "7c9eaabe383fe8b0352bf024ea0231b4568f110dc1e646aa07936288eb07c239",
+    "inspection\\class3_detector_v1_broader_evaluation_v1\\broader_v1_event_results.csv": "af2f3b8c6fec7bee831c3542968bb3a3e06c4202a1b98bd827474100ab2cbc10",
+    "inspection\\class3_detector_v2\\class3_detector_v2.py": "d736522523d769af13e173c13758623c161660df6ce6a3133167a3da78c7f044",
+    "inspection\\esa_broader_control_characterization_v1\\control_sampling_frame.csv": "3061c14fc314092911f346dd3c55663dff8abf6bd6f4e726ae1fbaef4f4407db",
+    "inspection\\esa_broader_control_characterization_v1\\feature_table.csv": "c8bec2da7c059943fd2230620f861a4889cd57c900c6ff3b58021798fe8c45d1",
+    "inspection\\mission1\\anomaly_types.csv": "e0cadee4ee9697c5ca8d4f9e81067454d7d7a00d063ee0de33cbc77660eec8bc",
+    "inspection\\mission1\\channels.csv": "27a4d6819642effc2a590d49e5bd2c7a915c06a1eb78502c34bed055d1c76d5d",
+    "inspection\\mission1\\labels.csv": "1564d630f1ec1387d699ec81531ce57118051a220c8b7cba050a446a652b9082",
+    "yamcs\\actual_server\\six_case_equivalence\\outputs\\score_equivalence_report.json": "bd396eee8b618e6734ac0e6e9106655f14a5e40c9436aa1a14eb892550f3fb4a",
+    "yamcs\\actual_server\\six_case_equivalence\\readiness_failure_forensic_report.md": "3bb6a14642cb854e57c8255c58e96bade4c06f6b9063560ce5eb0ede75452c82",
+    "yamcs\\actual_server\\smoke_test_result.json": "77367fd71fb268456789f563fc5c000d0221625e16f17db3962e394a397a5cf0"
+  }
+}

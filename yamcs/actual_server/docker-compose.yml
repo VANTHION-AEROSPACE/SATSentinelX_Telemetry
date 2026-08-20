@@ -1,0 +1,11 @@
+services:
+  satsentinel-yamcs:
+    image: yamcs/example-simulation:5.13.2
+    container_name: satsentinel-yamcs-esa
+    ports:
+      - "8091:8090"
+      - "11016:11016/udp"
+    volumes:
+      - ./etc:/opt/yamcs/etc:ro
+      - ./mdb:/opt/yamcs/mdb:ro
+      - ./storage:/storage/yamcs-data

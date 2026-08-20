@@ -1,0 +1,9 @@
+failure_mode,evidence,affected_experiments,severity,confidence,possible_explanation,experimentally_resolved,paper_treatment
+Dimensionality dependence,Broader 13–26 controls FPR 100%; v2 retained high-dimensional weakness,"E04,E05,E07,E09",High,High descriptive confidence,Aggregation/core-channel contribution and control composition,No,Must appear prominently
+Duration / persistent-window dependence,Broader persistent controls FPR 29.5%; prior audits show longer-window concentration,"E04,E05,E07,E09",High,Moderate-high,More opportunities for excursions and baseline/regime differences,No,Must appear
+Synchronized changes,Regime study and broader audit show synchrony in controls; synchrony alone insufficient,"E04,E05,E06,E09",Medium-high,Moderate,Shared spacecraft/system transitions or correlated telemetry,No,Must appear cautiously
+Scale estimation / fallback,Fallbacks recur and associate descriptively with detections; no causal proof,"E04,E05,E06,E07,E09",Medium,Moderate,Low variation/quantization and heterogeneous sampling,No,Must appear as limitation
+Channel groups 41–46 / 47–52,Broader FPR higher when groups present: 40.4% and 54.7% respectively,"E04,E07,E09",High,Moderate,Known group contribution and population composition,No,Must appear; do not call groups anomalous
+Regime changes,Independent characterization did not establish persistent-regime absence/presence as causal; v2 did not resolve,"E05,E06,E07,E09",Medium,Low-moderate,Feature definition and telemetry coverage limitations,No,Discuss as unresolved
+Label-negative versus nominal ambiguity,"All ESA controls are unlabelled/label-negative, not proven healthy",All control studies,Critical,High,No operational nominal ground truth,No,Mandatory limitation
+OPSSAT domain shift,Protocol robust_max ROC-AUC .483; different fragment/channel semantics,E10,High,High for transferability limitation,Domain/protocol mismatch,No,Mandatory external-study limitation

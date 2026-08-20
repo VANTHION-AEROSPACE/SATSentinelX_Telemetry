@@ -1,0 +1,6 @@
+sensitivity,n,detected_count,detection_rate,mean_analysis_score,median_analysis_score,model,note
+all_controls_raw,170,40,0.235294117647059,0.171649249045924,0,none,canonical broader-v1 control population
+sufficient_telemetry_raw,92,40,0.434782608695652,0.317177960193556,0.333333333333333,none,excludes insufficient-telemetry controls; descriptive sensitivity
+duration_adjusted,91,40,0.43956043956044,7.93016446160826e-18,0.0111523304678769,score ~ 1 + log_duration,residualized score; classifications unchanged
+dimensionality_adjusted,91,40,0.43956043956044,1.28712669338411e-16,-0.0246145115278444,score ~ 1 + log_channel_count,residualized score; classifications unchanged
+both_adjusted,91,40,0.43956043956044,1.97644098889314e-16,-0.0251227546441556,score ~ 1 + log_duration + log_channel_count,residualized score; classifications unchanged

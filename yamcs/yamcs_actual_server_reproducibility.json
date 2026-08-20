@@ -1,0 +1,6 @@
+{
+  "status": "BLOCKED_NOT_RUN",
+  "reason": "No actual Yamcs server was available; six-case actual-server suite was not executed.",
+  "validated_adapter_reproducibility": "PASS",
+  "actual_server_replay_runs": 0
+}

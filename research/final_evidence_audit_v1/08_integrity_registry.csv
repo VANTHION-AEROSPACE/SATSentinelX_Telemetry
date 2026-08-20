@@ -1,0 +1,10 @@
+artifact_group,paths_or_scope,status,verification,notes
+ESA raw/reconstructed telemetry,inspection/mission1 and selected_channels,PASS,Source files present; selected telemetry used by frozen packages,Only 26 channels reconstructed
+ESA labels,inspection/mission1/labels.csv,PASS,SHA-256/source manifest verified,Do not alter
+Anomaly metadata,inspection/mission1/anomaly_types.csv,PASS,SHA-256/source manifest verified,Do not alter
+Channel metadata,inspection/mission1/channels.csv,PASS,SHA-256/source manifest verified,76 metadata channels
+Detector v1,inspection/class3_detector_v1.py,PASS,Immutable hash recorded in broader manifest,Frozen
+Previous v1 evaluations,inspection/class3_detector_results.csv; channel results; report; evaluation,PASS,Files present and unchanged during audit,Frozen historical record
+Detector v2,inspection/class3_detector_v2/,PASS,v2 source hashes match v2_manifest.json,Separate experimental artifact
+OPSSAT raw data,external/opssat-ad/data/raw/,PASS,Raw hashes match protocol manifest,Official Zenodo source
+OPSSAT protocol,external/opssat-ad/inspection/,PASS,Manifest/reproducibility records present,Protocol result not direct v1 validation

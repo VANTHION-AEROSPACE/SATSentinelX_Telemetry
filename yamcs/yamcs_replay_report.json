@@ -1,0 +1,91 @@
+{
+  "yamcs_status": "CONFIGURED_LOCAL_PARAMETER_REPLAY",
+  "external_yamcs_server": "not present; local Yamcs-compatible parameter contract used for deterministic research demonstration",
+  "cases_total": 6,
+  "cases_successful": 6,
+  "cases_failed": 0,
+  "real_esa_telemetry_used": true,
+  "detector_version": "class3_detector_v1.py frozen",
+  "detector_hash": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+  "detector_modified": false,
+  "timestamps_preserved": true,
+  "channels_preserved": true,
+  "detector_input_equivalence": [
+    {
+      "case_id": "case_01_impulsive_class3",
+      "source_id": "id_118",
+      "research_score": 0.9833333333333332,
+      "replay_score": 0.9833333333333333,
+      "score_delta": 1.1102230246251565e-16,
+      "classification_match": true,
+      "input_equivalence": "EXACT_LOGICAL_CHANNELS_CONTEXT_AND_TIMESTAMP_CONVENTION",
+      "status": "PASS"
+    },
+    {
+      "case_id": "case_02_short_class3",
+      "source_id": "id_109",
+      "research_score": 0.9833333333333332,
+      "replay_score": 0.9833333333333333,
+      "score_delta": 1.1102230246251565e-16,
+      "classification_match": true,
+      "input_equivalence": "EXACT_LOGICAL_CHANNELS_CONTEXT_AND_TIMESTAMP_CONVENTION",
+      "status": "PASS"
+    },
+    {
+      "case_id": "case_03_medium_class3",
+      "source_id": "id_172",
+      "research_score": 0.9833333333333332,
+      "replay_score": 0.9833333333333333,
+      "score_delta": 1.1102230246251565e-16,
+      "classification_match": true,
+      "input_equivalence": "EXACT_LOGICAL_CHANNELS_CONTEXT_AND_TIMESTAMP_CONVENTION",
+      "status": "PASS"
+    },
+    {
+      "case_id": "case_04_long_persistent_highdim_class3",
+      "source_id": "id_185",
+      "research_score": 0.973076923076923,
+      "replay_score": 0.973076923076923,
+      "score_delta": 0.0,
+      "classification_match": true,
+      "input_equivalence": "EXACT_LOGICAL_CHANNELS_CONTEXT_AND_TIMESTAMP_CONVENTION",
+      "status": "PASS"
+    },
+    {
+      "case_id": "case_05_difficult_label_negative",
+      "source_id": "control_0001",
+      "research_score": 0.4879120879120879,
+      "replay_score": 0.48791208791208796,
+      "score_delta": 5.551115123125783e-17,
+      "classification_match": true,
+      "input_equivalence": "EXACT_LOGICAL_CHANNELS_CONTEXT_AND_TIMESTAMP_CONVENTION",
+      "status": "PASS"
+    },
+    {
+      "case_id": "case_06_high_dimensional_control",
+      "source_id": "control_0069",
+      "research_score": 0.6584615384615385,
+      "replay_score": 0.6584615384615385,
+      "score_delta": 0.0,
+      "classification_match": true,
+      "input_equivalence": "EXACT_LOGICAL_CHANNELS_CONTEXT_AND_TIMESTAMP_CONVENTION",
+      "status": "PASS"
+    }
+  ],
+  "replay_deterministic": "PASS after two-run comparison",
+  "output_deterministic": "PASS after two-run comparison",
+  "discrepancies": [],
+  "demonstrates": [
+    "Traceable real ESA telemetry parameter replay",
+    "Explicit channel/timestamp mapping around frozen v1",
+    "Deterministic event/channel evidence output",
+    "Operational distinction between detector evidence and label-negative/unlabelled control semantics"
+  ],
+  "does_not_demonstrate": [
+    "Independent detector generalization",
+    "Confirmed nominality of controls",
+    "Operational flight readiness",
+    "Need for or validity of Detector v3"
+  ],
+  "yamcs_research_reference": "yamcs_replay_report.md"
+}

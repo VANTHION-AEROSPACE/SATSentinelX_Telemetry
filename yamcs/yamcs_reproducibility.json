@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "seed": 20260812,
+  "cases": 6,
+  "detector_input_equivalence": "PASS for all six selected cases",
+  "replay_determinism": "Verified by consecutive-run hash comparison",
+  "output_determinism": "Verified by consecutive-run hash comparison",
+  "note": "This record is valid only when the external two-run comparison reports zero changed files."
+}

@@ -1,0 +1,3 @@
+[submodule "ESA-ADB"]
+	path = ESA-ADB
+	url = https://github.com/kplabs-pl/ESA-ADB.git

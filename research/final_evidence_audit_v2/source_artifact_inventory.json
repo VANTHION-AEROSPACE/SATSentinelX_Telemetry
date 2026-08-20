@@ -1,0 +1,65 @@
+{
+  "project_root": "E:\\SATSentinel-RealTelemetry",
+  "artifacts": [
+    {
+      "path": "inspection/class3_detector_v1.py",
+      "sha256": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+      "size": 14931
+    },
+    {
+      "path": "inspection/class3_detector_results.csv",
+      "sha256": "ecfce9c0ba089a2ec5b5a622e6603bde4c01c50e4c213cb0aa51d184a405f1ed",
+      "size": 8328
+    },
+    {
+      "path": "inspection/class3_detector_evaluation_report.json",
+      "sha256": "dabf355e5ebb94739074c43481e5308be9d3ac2de4d840031f9015e12f7949e0",
+      "size": 24960
+    },
+    {
+      "path": "inspection/class3_detector_v1_broader_evaluation_v1/broader_v1_evaluation_report.json",
+      "sha256": "bc84a21994946af4657708e9ee34d5f45ec5b84cac4c521f7776201bcf52b331",
+      "size": 8148
+    },
+    {
+      "path": "inspection/class3_detector_v2/class3_detector_v2.py",
+      "sha256": "d736522523d769af13e173c13758623c161660df6ce6a3133167a3da78c7f044",
+      "size": 4487
+    },
+    {
+      "path": "inspection/class3_detector_v2/v1_vs_v2_comparison.csv",
+      "sha256": "1d01ab8ec5f09e823df42b1d12cbc368f36fcc25290440c70de9aea822ad75a9",
+      "size": 1468
+    },
+    {
+      "path": "external/opssat-ad/inspection/opssat_protocol_report.json",
+      "sha256": "7e26b0e50d1833b58d9c39089bc798a999c20a127ab651f16fc09d99b78e62b5",
+      "size": 10322
+    },
+    {
+      "path": "external/opssat-ad/inspection/opssat_protocol_reproducibility.json",
+      "sha256": "d4abaa4f8486a438d865c83b720f875b034776264b1359b1d902e96a1b13f3d7",
+      "size": 1731
+    },
+    {
+      "path": "external/opssat-ad/data/raw/segments.csv",
+      "sha256": "dab2e01e873c93590692b50a7cc312d9cce4d5ba7e69ce8015603c47a8ffb97b",
+      "size": 17970946
+    },
+    {
+      "path": "yamcs/actual_server/smoke_test_result.json",
+      "sha256": "77367fd71fb268456789f563fc5c000d0221625e16f17db3962e394a397a5cf0",
+      "size": 1087
+    },
+    {
+      "path": "yamcs/actual_server/six_case_equivalence/outputs/score_equivalence_report.json",
+      "sha256": "bd396eee8b618e6734ac0e6e9106655f14a5e40c9436aa1a14eb892550f3fb4a",
+      "size": 1486
+    },
+    {
+      "path": "yamcs/actual_server/six_case_equivalence/readiness_failure_forensic_report.md",
+      "sha256": "3bb6a14642cb854e57c8255c58e96bade4c06f6b9063560ce5eb0ede75452c82",
+      "size": 2156
+    }
+  ]
+}

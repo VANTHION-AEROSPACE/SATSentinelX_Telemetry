@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "experiments_registered": 10,
+  "claims_classified": 11,
+  "datasets_registered": 6,
+  "decision": "USEFUL BUT LIMITED",
+  "detector_v1_frozen": true,
+  "detector_v3_justified": false,
+  "yamcs_readiness": "READY FOR PLANNED DEMONSTRATION DESIGN; NOT OPERATIONALLY VALIDATED",
+  "integrity": "PASS",
+  "reproducibility": "PASS"
+}

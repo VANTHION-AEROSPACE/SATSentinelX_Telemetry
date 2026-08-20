@@ -1,0 +1,49 @@
+# ================================
+# SATSentinel-X Generated Data
+# ================================
+
+# Raw downloaded telemetry
+raw-downloads/
+
+# Extracted / processed telemetry
+inspection/
+
+# YAMCS generated runtime data
+yamcs/actual_server/storage/
+yamcs/outputs/
+
+# Generated YAMCS equivalence outputs
+yamcs/actual_server/six_case_equivalence/outputs/
+yamcs/actual_server/smoke_test_result.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# Generated reports / caches
+*.cache
+*.tmp

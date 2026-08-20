@@ -1,0 +1,3 @@
+variable,positive_n,control_n,cohens_d_positive_minus_control,hedges_g_positive_minus_control,rank_biserial_positive_vs_control,interpretation
+duration_seconds,30,170,-0.612034370781381,-0.609713127908633,-0.625098039215686,standardized descriptive contrast; not causal
+channel_count,30,170,0.211695689453584,0.210892798090296,0.277450980392157,standardized descriptive contrast; not causal

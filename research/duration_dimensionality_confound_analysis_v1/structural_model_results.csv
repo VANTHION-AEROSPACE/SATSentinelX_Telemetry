@@ -1,0 +1,4 @@
+term,coefficient,odds_ratio,ci_low,ci_high,p_value,n,model,status,interpretation
+const,-14.3137674149779,6.07588851399921e-07,-20.9416851172719,-7.68584971268383,2.30827841856777e-05,91,detected ~ log(duration_seconds) + log(channel_count),stable,associational; not causal
+log_duration,0.117274377291137,1.12442790485192,-0.220045539830181,0.454594294412455,0.495611363686582,91,detected ~ log(duration_seconds) + log(channel_count),stable,associational; not causal
+log_channel_count,4.8164501754554,123.525816592331,2.96390708212162,6.66899326878919,3.47390593730003e-07,91,detected ~ log(duration_seconds) + log(channel_count),stable,associational; not causal

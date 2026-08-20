@@ -1,0 +1,12 @@
+services:
+  - class: org.yamcs.http.HttpServer
+
+instances:
+  - satsentinel_x
+
+dataDir: /storage/yamcs-data
+secretKey: "satsentinel-x-local-demo"
+
+yamcs-web:
+  tag: "SATSentinel-X ESA replay"
+

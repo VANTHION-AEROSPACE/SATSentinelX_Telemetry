@@ -1,0 +1,37 @@
+dataPartitioningByTime: YYYY/MM
+
+services:
+  - class: org.yamcs.archive.ParameterRecorder
+  - class: org.yamcs.archive.EventRecorder
+  - class: org.yamcs.archive.ReplayServer
+  - class: org.yamcs.parameter.SystemParametersService
+    args:
+      producers: ['jvm', 'fs', 'diskstats', 'loadavg', 'rocksdb']
+  - class: org.yamcs.ProcessorCreatorService
+    args:
+      name: realtime
+      type: realtime
+  - class: org.yamcs.parameterarchive.ParameterArchive
+  - class: org.yamcs.plists.ParameterListService
+
+dataLinks:
+  - name: esa_pp_realtime
+    class: org.yamcs.tctm.UdpParameterDataLink
+    stream: pp_realtime
+    port: 11016
+    json: true
+    recordingGroup: SATSENTINEL_X_ESA_REPLAY
+
+mdb:
+  - type: xtce
+    args:
+      file: mdb/satsentinel-x-esa.xml
+      autoTmPartitions: false
+
+streamConfig:
+  param:
+    - pp_realtime
+    - sys_param
+    - proc_param
+  event:
+    - events_realtime

@@ -1,0 +1,5 @@
+stratum,n,detected_count,detection_rate,median_score,mean_score,median_duration_seconds,median_channel_count,sparse_flag,stratification,population
+IMPULSIVE,2,0,0,0,0,0,2,True,duration_bucket,controls
+MEDIUM,33,0,0,0,0,480,0,False,duration_bucket,controls
+LONG,3,1,0.333333333333333,0.308333333333333,0.242777777777778,2280,12,True,duration_bucket,controls
+PERSISTENT,132,39,0.295454545454545,0.216666666666667,0.215545750033892,68387.25,6,False,duration_bucket,controls
