@@ -1,0 +1,1614 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SATSentinel-X | Ground Test Console</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* ==========================================================================
+       VANTHION AEROSPACE — SATSENTINEL-X INSTITUTIONAL DESIGN TOKENS & STYLES
+       ========================================================================== */
+    :root {
+      --bg: #070D15;
+      --bg-sidebar: #08111D;
+      --bg-main: #0C1725;
+      --bg-panel: #101F30;
+      --bg-elevated: #14263A;
+      --border: #1A2E44;
+      --border-subtle: #162538;
+      --text: #E8EEF5;
+      --text-secondary: #98A9BC;
+      --text-muted: #70849B;
+      --blue: #55A8F5;
+      --cyan: #63C9D8;
+      --green: #54C99A;
+      --warning: #F2B94B;
+      --alert: #FF646F;
+      --font-mono: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Consolas, monospace;
+      --glow-blue: 0 0 16px rgba(85, 168, 245, 0.2);
+      --glow-green: 0 0 16px rgba(84, 201, 154, 0.25);
+      --glow-alert: 0 0 16px rgba(255, 100, 111, 0.25);
+    }
+
+    body {
+      background: radial-gradient(circle at 80% -10%, #11263F 0%, var(--bg) 50%, #04080D 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Rail & Navigation */
+    .rail {
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 14px;
+    }
+
+    .rail-brand {
+      height: 116px;
+      margin: 0 0 14px;
+      padding: 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .rail-brand .sat-logo {
+      width: 188px;
+      max-width: 100%;
+      height: 108px;
+      object-fit: contain;
+      mix-blend-mode: screen;
+      filter: none;
+    }
+
+    .nav {
+      border-top: none;
+      padding: 0;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 12px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border: 1px solid transparent;
+      border-radius: 4px;
+      margin-bottom: 3px;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      letter-spacing: 0.3px;
+    }
+
+    .nav-item .nav-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      color: var(--text-muted);
+      transition: color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      background: rgba(20, 38, 58, 0.45);
+      color: var(--text);
+      border-color: var(--border-subtle);
+    }
+
+    .nav-item:hover .nav-icon {
+      color: var(--blue);
+    }
+
+    .nav-item.active {
+      background: rgba(85, 168, 245, 0.09);
+      color: #FFFFFF;
+      border-color: rgba(85, 168, 245, 0.18);
+      box-shadow: inset 2px 0 0 var(--blue);
+    }
+
+    .nav-item.active .nav-icon {
+      color: var(--blue);
+    }
+
+    .rail-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 14px;
+      margin-top: 18px;
+      flex-shrink: 0;
+      position: relative;
+      left: auto;
+      right: auto;
+      bottom: auto;
+    }
+
+    .rail-footer .vanthion-logo {
+      width: 136px;
+      height: auto;
+      object-fit: contain;
+      opacity: 0.85;
+      transition: opacity 0.15s ease;
+    }
+
+    .rail-footer .vanthion-logo:hover {
+      opacity: 1;
+    }
+
+    .rail-footer p {
+      color: var(--text-muted);
+      font-size: 8.5px;
+      letter-spacing: 1.2px;
+      line-height: 1.5;
+      margin: 8px 0 12px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .rail-footer-badge {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+
+    /* Topbar */
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      background: rgba(12, 23, 37, 0.7);
+      backdrop-filter: blur(10px);
+      padding: 0 4px;
+      height: 60px;
+    }
+
+    .topbar-brand {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+    }
+
+    .topbar-brand small {
+      font-size: 9px;
+      letter-spacing: 1.8px;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .topbar-context {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .topbar-context .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--warning);
+      font-weight: 600;
+    }
+
+    .topbar-context .console-title {
+      font-size: 9.5px;
+      letter-spacing: 1.4px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .version-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+    }
+
+    /* Panels */
+    .panel {
+      background: linear-gradient(145deg, rgba(16, 31, 48, 0.95) 0%, rgba(12, 23, 37, 0.9) 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Connection Row & Replay Row */
+    .connection-row, .replay-row {
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(16, 31, 48, 0.9) 0%, rgba(10, 19, 31, 0.95) 100%);
+    }
+
+    .connection-row select, .replay-row select, .settings-grid select {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      border-radius: 5px;
+      padding: 7px 10px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .connection-row select:focus, .replay-row select:focus, .settings-grid select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 1px var(--blue);
+    }
+
+    .button {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      border-radius: 5px;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s ease;
+    }
+
+    .button:hover:not(:disabled) {
+      background: #1B334E;
+      border-color: var(--blue);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .button.primary {
+      background: linear-gradient(180deg, #3A8AE0 0%, #1F6AC0 100%);
+      border-color: #55A8F5;
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    }
+
+    .button.primary:hover:not(:disabled) {
+      background: linear-gradient(180deg, #4A9CF0 0%, #2A78D0 100%);
+      box-shadow: var(--glow-blue);
+    }
+
+    .icon-button {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text-secondary);
+      padding: 6px 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+
+    .icon-button:hover:not(:disabled) {
+      border-color: var(--blue);
+      color: var(--text);
+    }
+
+    .connection-status {
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .connection-status strong {
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+
+    .connection-status small {
+      color: var(--text-muted);
+      font-size: 10.5px;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--alert);
+      box-shadow: 0 0 8px rgba(255, 100, 111, 0.6);
+      flex-shrink: 0;
+    }
+
+    .connection-status.connected .status-dot {
+      background: var(--green);
+      box-shadow: var(--glow-green);
+    }
+
+    .connection-status.error .status-dot {
+      background: var(--warning);
+      box-shadow: 0 0 8px rgba(242, 185, 75, 0.6);
+    }
+
+    .status-stat strong {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      color: var(--cyan);
+    }
+
+    .replay-row .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      font-weight: 600;
+    }
+
+    #source-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--warning);
+      letter-spacing: 0.5px;
+    }
+
+    .replay-progress {
+      font-family: var(--font-mono);
+      color: var(--cyan);
+      font-size: 11.5px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 5px 10px;
+    }
+
+    /* ==========================================================================
+       SUBSYSTEM STATUS GRID (6 Cards: POWER, THERMAL, COMMS, ADCS, PROP, PAYLOAD)
+       ========================================================================== */
+    .subsystem-section {
+      margin-top: 14px;
+    }
+
+    .subsystem-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 0 2px;
+    }
+
+    .subsystem-header-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.8px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .subsystem-header-title svg {
+      color: var(--blue);
+    }
+
+    .subsystem-bus-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .subsystem-bus-meta span {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .subsystem-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .subsystem-card {
+      background: linear-gradient(160deg, rgba(16, 31, 48, 0.8) 0%, rgba(10, 19, 31, 0.9) 100%);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .subsystem-card.muted {
+      opacity: 0.65;
+      border-color: var(--border-subtle);
+      background: rgba(12, 23, 37, 0.6);
+    }
+
+    .subsystem-card.muted:hover {
+      opacity: 0.85;
+      border-color: var(--border);
+    }
+
+    .subsystem-card.thermal-active {
+      border-color: rgba(255, 100, 111, 0.45);
+      background: linear-gradient(160deg, rgba(28, 38, 54, 0.95) 0%, rgba(16, 27, 42, 0.95) 100%);
+      box-shadow: 0 0 16px rgba(255, 100, 111, 0.12);
+      cursor: pointer;
+    }
+
+    .subsystem-card.thermal-active:hover {
+      border-color: var(--alert);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(255, 100, 111, 0.22);
+    }
+
+    .subsystem-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subsystem-icon-box {
+      width: 28px;
+      height: 28px;
+      border-radius: 5px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+    }
+
+    .subsystem-card.thermal-active .subsystem-icon-box {
+      color: var(--alert);
+      background: rgba(255, 100, 111, 0.12);
+      border-color: rgba(255, 100, 111, 0.35);
+    }
+
+    .subsystem-badge {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 1px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .subsystem-badge.muted {
+      color: var(--text-muted);
+      background: rgba(112, 132, 155, 0.1);
+      border: 1px solid rgba(112, 132, 155, 0.2);
+    }
+
+    .subsystem-badge.active-thermal {
+      color: var(--green);
+      background: rgba(84, 201, 154, 0.12);
+      border: 1px solid rgba(84, 201, 154, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .subsystem-badge.active-thermal .pulse-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .subsystem-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .subsystem-code {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--cyan);
+      letter-spacing: 1px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .subsystem-card.muted .subsystem-code {
+      color: var(--text-muted);
+    }
+
+    .subsystem-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: var(--text);
+    }
+
+    .subsystem-status-text {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .subsystem-card.thermal-active .subsystem-status-text {
+      color: #9ECBF2;
+      font-weight: 500;
+    }
+
+    .subsystem-status-text svg {
+      opacity: 0.7;
+      transition: transform 0.15s ease;
+    }
+
+    .subsystem-card.thermal-active:hover .subsystem-status-text svg {
+      transform: translateX(3px);
+      opacity: 1;
+    }
+
+    /* Metric Cards */
+    .metric-grid {
+      margin-top: 14px;
+      gap: 14px;
+    }
+
+    .metric-card {
+      background: linear-gradient(145deg, rgba(16, 31, 48, 0.95) 0%, rgba(10, 19, 31, 0.9) 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .metric-card strong {
+      font-family: var(--font-mono);
+      font-size: 29px;
+      letter-spacing: 0.5px;
+      color: #FFFFFF;
+    }
+
+    .metric-card strong i {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 19px;
+      color: var(--text-secondary);
+      margin-left: 4px;
+    }
+
+    .metric-card small {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    .temperature { --accent: var(--alert); }
+    .humidity { --accent: var(--blue); }
+    .pressure { --accent: var(--green); }
+
+    .metric-card:before {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .metric-card .metric-icon svg {
+      color: var(--accent);
+    }
+
+    /* Charts */
+    .chart-grid {
+      margin-top: 14px;
+      gap: 14px;
+    }
+
+    .chart-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(16, 31, 48, 0.95) 0%, rgba(10, 19, 31, 0.9) 100%);
+    }
+
+    .card-head h2 {
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text);
+    }
+
+    .legend {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.5px;
+    }
+
+    .legend.red { color: var(--alert); }
+    .legend.blue { color: var(--blue); }
+    .legend.green { color: var(--green); }
+
+    .chart-empty {
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    /* Statistics & Lower Grid */
+    .stat-grid > div {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+    }
+
+    .stat-grid span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    .stat-grid strong {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      color: var(--green);
+    }
+
+    .stat-grid .bad strong { color: var(--alert); }
+    .stat-grid .warn strong { color: var(--warning); }
+    .stat-grid .info strong { color: var(--blue); }
+
+    .stat-footer strong {
+      font-family: var(--font-mono);
+      color: var(--cyan);
+    }
+
+    /* Tables */
+    table {
+      font-family: var(--font-mono);
+    }
+
+    th {
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      font-size: 11.5px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    td.valid {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    td.invalid {
+      color: var(--alert);
+      font-weight: 600;
+    }
+
+    /* Message list */
+    .message-list {
+      background: #060B12;
+      border-color: var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+    }
+
+    /* Incident View Timeline */
+    .incident-timeline-wrap {
+      margin-top: 20px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      background: var(--bg-elevated);
+    }
+
+    .incident-timeline-wrap h3 {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin: 0 0 14px 0;
+    }
+
+    .timeline-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      position: relative;
+    }
+
+    .timeline-step {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .timeline-step .step-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .timeline-step.norm .step-tag { color: var(--green); }
+    .timeline-step.warn .step-tag { color: var(--warning); }
+    .timeline-step.crit .step-tag { color: var(--alert); }
+
+    .timeline-step strong {
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .timeline-step small {
+      font-size: 10.5px;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .subsystem-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .subsystem-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- ====================================================================
+         SIDEBAR / RAIL NAVIGATION
+         ==================================================================== -->
+    <aside class="rail">
+      <div class="rail-brand">
+        <img src="/assets/satsentinel-x-emblem.png" alt="SATSentinel-X" class="sat-logo">
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-view="dashboard-view" aria-label="Dashboard view">
+          <span class="nav-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </span>
+          Dashboard
+        </button>
+        <button class="nav-item" data-view="log-view" aria-label="Telemetry Log view">
+          <span class="nav-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"></path>
+            </svg>
+          </span>
+          Telemetry Log
+        </button>
+        <button class="nav-item" data-view="session-view" aria-label="Session view">
+          <span class="nav-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <circle cx="12" cy="12" r="3" fill="currentColor"></circle>
+            </svg>
+          </span>
+          Session
+        </button>
+        <button class="nav-item" data-view="incident-view" aria-label="Incident view">
+          <span class="nav-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </span>
+          Incident
+        </button>
+        <button class="nav-item" data-view="autonomy-view" aria-label="Autonomy Demonstrator view">
+          <span class="nav-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="6" width="16" height="12" rx="2"></rect>
+              <path d="M21 10v4"></path>
+              <path d="M7 10h5M7 14h3"></path>
+            </svg>
+          </span>
+          Autonomy Demonstrator
+        </button>
+        <button class="nav-item" data-view="settings-view" aria-label="Settings view">
+          <span class="nav-icon" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"></path>
+            </svg>
+          </span>
+          Settings
+        </button>
+      </nav>
+
+      <div class="rail-footer">
+        <img src="/assets/vanthion-aerospace-logo.png" alt="Vanthion Aerospace" class="vanthion-logo">
+        <p>SATELLITE SYSTEMS<br>AI &amp; AUTONOMY<br>RESEARCH &amp; DEVELOPMENT</p>
+        <div class="rail-footer-badge">
+          <span>V0.2 · LOCAL</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         MAIN CONTENT AREA
+         ==================================================================== -->
+    <main class="main">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-brand">
+          SATSentinel-X
+          <small>SPACECRAFT TELEMETRY INTELLIGENCE</small>
+        </div>
+        <div class="topbar-context">
+          <div class="eyebrow">GROUND TEST CONSOLE</div>
+          <div class="console-title">INSTITUTIONAL TELEMETRY OPERATIONS</div>
+        </div>
+        <div class="version version-tag">V0.2</div>
+      </header>
+
+      <!-- CONNECTION ROW -->
+      <section class="connection-row panel" aria-label="Serial Connection Controls">
+        <label class="port-field" for="port-select">Serial Port
+          <select id="port-select" aria-label="Serial port">
+            <option value="">Select port</option>
+          </select>
+        </label>
+        <button id="refresh-ports" class="icon-button" title="Refresh serial ports" aria-label="Refresh serial ports">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+            <path d="M21 21v-5h-5"></path>
+          </svg>
+        </button>
+        <button id="connect" class="button primary" disabled title="Select a serial port first">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+          Connect
+        </button>
+        <button id="disconnect" class="button" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          Disconnect
+        </button>
+        <div id="connection-status" class="connection-status disconnected">
+          <span class="status-dot"></span>
+          <div>
+            <strong>Disconnected</strong>
+            <small>No device connected</small>
+          </div>
+        </div>
+        <div class="status-stat">
+          <small>Last Message</small>
+          <strong id="last-message">--:--:--</strong>
+        </div>
+        <div class="status-stat">
+          <small>Uptime</small>
+          <strong id="uptime">00:00:00</strong>
+        </div>
+      </section>
+
+      <!-- REPLAY ROW -->
+      <section class="replay-row panel" aria-label="Telemetry Replay Simulation Controls">
+        <div>
+          <span class="eyebrow">DEMO SOURCE</span>
+          <strong id="source-label">No source selected</strong>
+        </div>
+        <label for="replay-source">Replay source
+          <select id="replay-source" aria-label="Replay source">
+            <option value="synthetic">Synthetic thermal-rise scenario</option>
+          </select>
+        </label>
+        <label for="replay-speed">Speed
+          <select id="replay-speed" aria-label="Replay speed">
+            <option value="1">1×</option>
+            <option value="4" selected>4×</option>
+            <option value="10">10×</option>
+            <option value="20">20×</option>
+          </select>
+        </label>
+        <button id="replay-play" class="button primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Play replay
+        </button>
+        <button id="replay-pause" class="button" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="4" width="4" height="16"></rect>
+            <rect x="14" y="4" width="4" height="16"></rect>
+          </svg>
+          Pause
+        </button>
+        <button id="replay-reset" class="button" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          Reset
+        </button>
+        <span id="replay-progress" class="replay-progress">No replay loaded</span>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 1: DASHBOARD
+           ================================================================== -->
+      <section id="dashboard-view" class="view active-view" data-view-panel>
+        <!-- Top: Subsystem Status Grid (6 cards) -->
+        <div class="subsystem-section">
+          <div class="subsystem-header-bar">
+            <div class="subsystem-header-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              Spacecraft Subsystem Telemetry Status
+            </div>
+            <div class="subsystem-bus-meta">
+              DATA AVAILABILITY: <span>THERMAL CHANNEL ONLY</span>
+            </div>
+          </div>
+
+          <div class="subsystem-grid">
+            <!-- 1. POWER -->
+            <div class="subsystem-card muted" data-subsystem="power">
+              <div class="subsystem-top">
+                <div class="subsystem-icon-box" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="16" height="12" rx="2"></rect>
+                    <path d="M22 11v4"></path>
+                    <path d="M10 10l-2 3h4l-2 3"></path>
+                  </svg>
+                </div>
+                <span class="subsystem-badge muted">NO DATA</span>
+              </div>
+              <div class="subsystem-meta">
+                <span class="subsystem-code">EPS · POWER</span>
+                <span class="subsystem-title">Electrical Power</span>
+                <div class="subsystem-status-text">
+                  <span>Channel unconfigured</span>
+                  <span>--</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. THERMAL (Links to Temperature Reading) -->
+            <a href="#temperature-value" class="subsystem-card thermal-active" data-subsystem="thermal" title="Linked to telemetry sensor stream: Temperature reading">
+              <div class="subsystem-top">
+                <div class="subsystem-icon-box" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+                  </svg>
+                </div>
+                <span class="subsystem-badge muted">NO DATA</span>
+              </div>
+              <div class="subsystem-meta">
+                <span class="subsystem-code">TCS · THERMAL</span>
+                <span class="subsystem-title">Thermal Control</span>
+                <div class="subsystem-status-text">
+                  <span>Sensor Stream Linked</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </div>
+              </div>
+            </a>
+
+            <!-- 3. COMMS -->
+            <div class="subsystem-card muted" data-subsystem="comms">
+              <div class="subsystem-top">
+                <div class="subsystem-icon-box" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path>
+                    <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path>
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path>
+                    <path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"></path>
+                  </svg>
+                </div>
+                <span class="subsystem-badge muted">NO DATA</span>
+              </div>
+              <div class="subsystem-meta">
+                <span class="subsystem-code">TT&amp;C · COMMS</span>
+                <span class="subsystem-title">Communications</span>
+                <div class="subsystem-status-text">
+                  <span>Channel unconfigured</span>
+                  <span>--</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. ADCS -->
+            <div class="subsystem-card muted" data-subsystem="adcs">
+              <div class="subsystem-top">
+                <div class="subsystem-icon-box" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="m4.93 4.93 4.24 4.24"></path>
+                    <path d="m14.83 9.17 4.24-4.24"></path>
+                    <path d="m14.83 14.83 4.24 4.24"></path>
+                    <path d="m9.17 14.83-4.24 4.24"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </div>
+                <span class="subsystem-badge muted">NO DATA</span>
+              </div>
+              <div class="subsystem-meta">
+                <span class="subsystem-code">ADCS · GUIDANCE</span>
+                <span class="subsystem-title">Attitude Control</span>
+                <div class="subsystem-status-text">
+                  <span>Channel unconfigured</span>
+                  <span>--</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. PROPULSION -->
+            <div class="subsystem-card muted" data-subsystem="propulsion">
+              <div class="subsystem-top">
+                <div class="subsystem-icon-box" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2c3.5 3 4.5 7 4.5 10a4.5 4.5 0 0 1-9 0c0-3 1-7 4.5-10z"></path>
+                    <circle cx="12" cy="14" r="2"></circle>
+                  </svg>
+                </div>
+                <span class="subsystem-badge muted">NO DATA</span>
+              </div>
+              <div class="subsystem-meta">
+                <span class="subsystem-code">RCS · PROPULSION</span>
+                <span class="subsystem-title">Propulsion Unit</span>
+                <div class="subsystem-status-text">
+                  <span>Channel unconfigured</span>
+                  <span>--</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. PAYLOAD -->
+            <div class="subsystem-card muted" data-subsystem="payload">
+              <div class="subsystem-top">
+                <div class="subsystem-icon-box" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                </div>
+                <span class="subsystem-badge muted">NO DATA</span>
+              </div>
+              <div class="subsystem-meta">
+                <span class="subsystem-code">PLD · PAYLOAD</span>
+                <span class="subsystem-title">Mission Sensor Suite</span>
+                <div class="subsystem-status-text">
+                  <span>Channel unconfigured</span>
+                  <span>--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle: Telemetry Metrics (3 cards) -->
+        <div class="metric-grid">
+          <article class="metric-card temperature">
+            <div class="metric-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <span>Temperature</span>
+              <strong id="temperature-value">--.-- <i>°C</i></strong>
+              <small id="temperature-time">—</small>
+            </div>
+            <b aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </b>
+          </article>
+
+          <article class="metric-card humidity">
+            <div class="metric-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <span>Humidity</span>
+              <strong id="humidity-value">--.-- <i>%</i></strong>
+              <small id="humidity-time">—</small>
+            </div>
+            <b aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </b>
+          </article>
+
+          <article class="metric-card pressure">
+            <div class="metric-icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="m14 14-4-4"></path>
+                <path d="M12 6v2"></path>
+                <path d="M6 12h2"></path>
+                <path d="M16 12h2"></path>
+              </svg>
+            </div>
+            <div>
+              <span>Pressure</span>
+              <strong id="pressure-value">----.-- <i>hPa</i></strong>
+              <small id="pressure-time">—</small>
+            </div>
+            <b aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </b>
+          </article>
+        </div>
+
+        <!-- Charts: 3 cards -->
+        <div class="chart-grid">
+          <article class="chart-card panel temperature-chart">
+            <div class="card-head">
+              <h2>Temperature (°C)</h2>
+              <span class="legend red">● Temperature</span>
+            </div>
+            <canvas id="temperature-chart"></canvas>
+            <div class="chart-empty" id="temperature-empty">Waiting for telemetry</div>
+          </article>
+
+          <article class="chart-card panel">
+            <div class="card-head">
+              <h2>Humidity (%)</h2>
+              <span class="legend blue">● Humidity · no current data</span>
+            </div>
+            <canvas id="humidity-chart"></canvas>
+            <div class="chart-empty" id="humidity-empty">Not provided by current firmware</div>
+          </article>
+
+          <article class="chart-card panel">
+            <div class="card-head">
+              <h2>Pressure (hPa)</h2>
+              <span class="legend green">● Pressure · no current data</span>
+            </div>
+            <canvas id="pressure-chart"></canvas>
+            <div class="chart-empty" id="pressure-empty">Not provided by current firmware</div>
+          </article>
+        </div>
+
+        <!-- Statistics Panel & Recent Telemetry Table -->
+        <div class="lower-grid">
+          <article class="panel statistics">
+            <div class="card-head">
+              <h2>Telemetry Statistics</h2>
+            </div>
+            <div class="stat-grid">
+              <div>
+                <span>Valid Records</span>
+                <strong id="valid-records">0</strong>
+              </div>
+              <div class="bad">
+                <span>Invalid Records</span>
+                <strong id="invalid-records">0</strong>
+              </div>
+              <div class="warn">
+                <span>Sequence Errors</span>
+                <strong id="sequence-errors">0</strong>
+              </div>
+              <div class="info">
+                <span>Data Gaps</span>
+                <strong id="data-gaps">0</strong>
+              </div>
+            </div>
+            <div class="stat-footer">
+              <div>
+                <span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 4px;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  Session Duration
+                </span>
+                <strong id="session-duration">00:00:00</strong>
+              </div>
+              <div>
+                <span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -1px; margin-right: 4px;">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                  Total Records
+                </span>
+                <strong id="total-records">0</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel recent">
+            <div class="card-head">
+              <h2>Recent Telemetry</h2>
+              <button id="clear-records" class="small-button" disabled title="No records are currently displayed">Clear display</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Timestamp</th>
+                    <th>Temp (°C)</th>
+                    <th>Humidity (%)</th>
+                    <th>Pressure (hPa)</th>
+                    <th>Sequence</th>
+                    <th>Valid</th>
+                  </tr>
+                </thead>
+                <tbody id="records-body">
+                  <tr class="empty-row">
+                    <td colspan="7">No telemetry data yet<br><small>Connect to a device to start receiving data.</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <!-- Session Controls & System Messages -->
+        <div class="bottom-grid">
+          <article class="panel session-controls">
+            <div class="card-head">
+              <h2>Session Controls</h2>
+            </div>
+            <div class="button-row">
+              <button id="start-logging" class="button primary" title="Connect to a device before starting logging">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Start Logging
+              </button>
+              <button id="stop-logging" class="button" disabled title="No logging session is active">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <rect x="5" y="5" width="14" height="14"></rect>
+                </svg>
+                Stop Logging
+              </button>
+              <button id="download" class="button download" disabled title="No captured records to export">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download JSONL
+              </button>
+            </div>
+          </article>
+
+          <article class="panel messages">
+            <div class="card-head">
+              <h2>System Messages</h2>
+            </div>
+            <div id="messages-list" class="message-list" aria-live="polite">
+              <div class="message info">[INFO] Dashboard initialized. Please connect to a device.</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 2: TELEMETRY LOG
+           ================================================================== -->
+      <section id="log-view" class="view" data-view-panel>
+        <article class="panel page-panel">
+          <div class="page-heading">
+            <div>
+              <span class="eyebrow">RECORD REVIEW</span>
+              <h1>Telemetry Log</h1>
+              <p>Validated records received during this dashboard session. Clearing this display never deletes the exported JSONL source.</p>
+            </div>
+            <button id="log-clear" class="button" disabled title="No records are currently displayed">Clear display</button>
+          </div>
+          <div class="log-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Host timestamp</th>
+                  <th>Device time</th>
+                  <th>Temperature</th>
+                  <th>Sensor status</th>
+                  <th>Sequence</th>
+                  <th>Validation</th>
+                </tr>
+              </thead>
+              <tbody id="log-records-body">
+                <tr class="empty-row">
+                  <td colspan="7">No telemetry records in the current display.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 3: SESSION
+           ================================================================== -->
+      <section id="session-view" class="view" data-view-panel>
+        <div class="session-page-grid">
+          <article class="panel page-panel">
+            <div class="page-heading">
+              <div>
+                <span class="eyebrow">CAPTURE CONTROL</span>
+                <h1>Session</h1>
+                <p>Logging captures accepted records after it is started. It does not alter firmware or the physical acceptance gate.</p>
+              </div>
+              <span id="session-indicator" class="pill">IDLE</span>
+            </div>
+            <div class="session-summary">
+              <div>
+                <span>Status</span>
+                <strong id="session-status">Disconnected</strong>
+              </div>
+              <div>
+                <span>Duration</span>
+                <strong id="session-page-duration">00:00:00</strong>
+              </div>
+              <div>
+                <span>Total records</span>
+                <strong id="session-total-records">0</strong>
+              </div>
+              <div>
+                <span>Valid records</span>
+                <strong id="session-valid-records">0</strong>
+              </div>
+            </div>
+            <div class="button-row">
+              <button id="session-start" class="button primary" disabled title="Connect to a device before starting logging">Start Logging</button>
+              <button id="session-stop" class="button" disabled title="No logging session is active">Stop Logging</button>
+              <button id="session-download" class="button download" disabled title="No captured records to export">Download JSONL</button>
+            </div>
+          </article>
+
+          <article class="panel page-panel">
+            <div class="card-head">
+              <h2>Session integrity</h2>
+            </div>
+            <div id="session-integrity" class="integrity-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 4: INCIDENT INVESTIGATION
+           ================================================================== -->
+      <section id="incident-view" class="view" data-view-panel>
+        <article class="panel page-panel incident-panel">
+          <div class="page-heading">
+            <div>
+              <span class="eyebrow">EVIDENCE REVIEW</span>
+              <h1>Incident Investigation</h1>
+              <p>Synthetic detector evidence linked to the exact validated replay records. This is not ESA reproduction or operational diagnosis.</p>
+            </div>
+            <button id="evidence-download" class="button download" disabled>Download Evidence JSON</button>
+          </div>
+
+          <!-- Empty State -->
+          <div id="incident-empty" class="empty-state">
+            Run the synthetic thermal-rise replay to produce an evidence-linked incident.
+          </div>
+
+          <!-- Details State (hidden by default) -->
+          <div id="incident-details" hidden>
+            <div class="incident-summary">
+              <div>
+                <span>Incident</span>
+                <strong id="incident-id">—</strong>
+              </div>
+              <div>
+                <span>Classification</span>
+                <strong id="incident-classification">—</strong>
+              </div>
+              <div>
+                <span>Onset</span>
+                <strong id="incident-onset">—</strong>
+              </div>
+              <div>
+                <span>Threshold</span>
+                <strong id="incident-threshold">—</strong>
+              </div>
+            </div>
+
+            <div class="incident-grid">
+              <div>
+                <h2>Detector configuration</h2>
+                <div id="incident-config" class="evidence-list"></div>
+              </div>
+              <div>
+                <h2>Affected channels</h2>
+                <div id="incident-channels" class="evidence-list"></div>
+              </div>
+            </div>
+
+            <!-- Event Timeline Area -->
+            <div class="incident-timeline-wrap">
+              <h3>Event Timeline Sequence</h3>
+              <div class="timeline-steps">
+                <div class="timeline-step norm">
+                  <span class="step-tag">PHASE 01 · T-0 NOMINAL</span>
+                  <strong>Baseline Stability</strong>
+                  <small>Dynamic sensor median verified</small>
+                </div>
+                <div class="timeline-step warn">
+                  <span class="step-tag">PHASE 02 · T+ONSET INCEPTION</span>
+                  <strong>Thermal Gradient Anomaly</strong>
+                  <small>Channel rate-of-rise threshold exceeded</small>
+                </div>
+                <div class="timeline-step crit">
+                  <span class="step-tag">PHASE 03 · T+TRIGGER CAPTURE</span>
+                  <strong>Deterministic Lock</strong>
+                  <small>Evidence snapshot frozen for export</small>
+                </div>
+              </div>
+            </div>
+
+            <h2>Linked event records</h2>
+            <div id="incident-records" class="incident-records"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 5: AUTONOMY DEMONSTRATOR
+           ================================================================== -->
+      <section id="autonomy-view" class="view" data-view-panel>
+        <article class="panel page-panel autonomy-panel">
+          <div class="page-heading">
+            <div>
+              <span class="eyebrow">SYNTHETIC AUTONOMY DEMONSTRATOR</span>
+              <h1>Power Anomaly Recovery</h1>
+              <p>Deterministic synthetic voltage scenarios showing policy-gated recovery and escalation. No spacecraft hardware is controlled.</p>
+            </div>
+            <button id="autonomy-evidence-download" class="button download" disabled>Download Autonomy Evidence</button>
+          </div>
+
+          <div class="autonomy-controls" aria-label="Synthetic autonomy scenario controls">
+            <span class="autonomy-source-label">SOURCE: SYNTHETIC POWER PROFILE</span>
+            <button id="autonomy-run-success" class="button primary">Run recovery success</button>
+            <button id="autonomy-run-failure" class="button">Run failed recovery</button>
+            <button id="autonomy-reset" class="button" disabled>Reset</button>
+            <span id="autonomy-status" class="autonomy-status">No scenario run</span>
+          </div>
+
+          <div id="autonomy-empty" class="empty-state">
+            Run a scenario to inspect warning detection, policy preconditions, simulated action and verified outcome.
+          </div>
+
+          <div id="autonomy-details" hidden>
+            <div class="autonomy-summary">
+              <div><span>Scenario</span><strong id="autonomy-scenario">—</strong></div>
+              <div><span>Final state</span><strong id="autonomy-final-state">—</strong></div>
+              <div><span>Outcome</span><strong id="autonomy-outcome">—</strong></div>
+              <div><span>Records</span><strong id="autonomy-record-count">—</strong></div>
+            </div>
+
+            <div class="autonomy-grid">
+              <div>
+                <h2>Policy configuration</h2>
+                <div id="autonomy-configuration" class="evidence-list"></div>
+              </div>
+              <div>
+                <h2>Trigger and decision</h2>
+                <div id="autonomy-trigger" class="evidence-list"></div>
+              </div>
+              <div>
+                <h2>Simulated action</h2>
+                <div id="autonomy-action" class="evidence-list"></div>
+              </div>
+              <div>
+                <h2>Verification evidence</h2>
+                <div id="autonomy-verification" class="evidence-list"></div>
+              </div>
+            </div>
+
+            <div class="autonomy-chart-panel">
+              <div class="card-head">
+                <h2>Observed synthetic voltage profile</h2>
+                <span class="autonomy-chart-legend">Observed · warning · critical · recovery</span>
+              </div>
+              <canvas id="autonomy-voltage-chart" height="220" aria-label="Synthetic voltage profile with configured thresholds"></canvas>
+              <p class="autonomy-chart-note">Synthetic scenario values only. Thresholds are configured policy inputs, not spacecraft limits.</p>
+            </div>
+
+            <div class="autonomy-timeline">
+              <h2>Policy state trace</h2>
+              <ol id="autonomy-state-history"></ol>
+            </div>
+            <div id="autonomy-runtime" class="autonomy-runtime"></div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ==================================================================
+           VIEW 6: SETTINGS
+           ================================================================== -->
+      <section id="settings-view" class="view" data-view-panel>
+        <article class="panel page-panel settings-panel">
+          <div class="page-heading">
+            <div>
+              <span class="eyebrow">LOCAL CONFIGURATION</span>
+              <h1>Settings</h1>
+              <p>These preferences affect only this browser display. Telemetry validation and the receiver protocol remain unchanged.</p>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <label for="settings-port-select">Serial port
+              <select id="settings-port-select" aria-label="Settings serial port">
+                <option value="">Use connection selector above</option>
+              </select>
+            </label>
+            <button id="settings-refresh-ports" class="button">Refresh ports</button>
+            <label for="chart-window">Chart time window
+              <select id="chart-window">
+                <option value="60">Last 60 points</option>
+                <option value="180" selected>Last 180 points</option>
+                <option value="1000">All available points</option>
+              </select>
+            </label>
+            <label class="check-row" for="auto-refresh">
+              <input type="checkbox" id="auto-refresh" checked> Auto-refresh dashboard state
+            </label>
+          </div>
+          <div class="source-note">
+            <strong>Data source</strong>
+            <span>USB serial → existing <code>read_framed_line()</code> → <code>TelemetryReceiver</code> → local dashboard.</span>
+            <span>Current firmware supplies temperature only. Humidity and pressure remain unavailable.</span>
+          </div>
+          <div class="source-note" style="margin-top: 14px;">
+            <strong>About Vanthion Aerospace SATSentinel-X</strong>
+            <span>Local telemetry demonstrator · current firmware provides temperature only</span>
+            <span>Version: 0.2.0 · Ground Test Demonstrator Release</span>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

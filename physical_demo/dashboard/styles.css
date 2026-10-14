@@ -1,0 +1,1782 @@
+/**
+ * SATSentinel-X Ground Telemetry & Flight Intelligence Console
+ * Vanthion Aerospace — Satellite Systems R&D
+ * Institutional Aerospace Engineering Design System
+ */
+
+/* ==========================================================================
+   1. CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   ========================================================================== */
+
+:root {
+  /* Aerospace Dark Palette */
+  --bg: #070D15;
+  --bg-sidebar: #08111D;
+  --bg-main: #0C1725;
+  --bg-panel: #101F30;
+  --bg-elevated: #14263A;
+
+  /* Borders & Dividers */
+  --border: #1A2E44;
+  --border-subtle: #162538;
+  --border-active: #24384D;
+
+  /* Typography Colors */
+  --text: #E8EEF5;
+  --text-secondary: #98A9BC;
+  --text-muted: #70849B;
+
+  /* Accent & Telemetry Status Colors */
+  --blue: #55A8F5;
+  --cyan: #63C9D8;
+  --green: #54C99A;
+  --warning: #F2B94B;
+  --alert: #FF646F;
+
+  /* Font Families */
+  --font-sans: 'Segoe UI', Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+
+  /* Radii & Shadows */
+  --radius-sm: 4px;
+  --radius: 6px;
+  --radius-lg: 8px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   2. RESET & BASE ELEMENTS
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 13px;
+  background-color: var(--bg);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   3. TYPOGRAPHY & UTILITY CLASSES
+   ========================================================================== */
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+}
+
+.badge.badge-synthetic {
+  color: var(--cyan);
+  border-color: rgba(99, 201, 216, 0.3);
+}
+
+.badge.badge-live {
+  color: var(--green);
+  border-color: rgba(84, 201, 154, 0.3);
+}
+
+.badge.badge-demo {
+  color: var(--warning);
+  border-color: rgba(242, 185, 75, 0.3);
+}
+
+/* ==========================================================================
+   4. APP SHELL & OVERALL LAYOUT
+   ========================================================================== */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+/* ==========================================================================
+   5. SIDEBAR (.rail)
+   ========================================================================== */
+
+.rail {
+  width: 240px;
+  flex-shrink: 0;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  padding: 20px 14px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.rail-brand {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.sat-logo {
+  width: 180px;
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  display: block;
+}
+
+/* Sidebar Navigation */
+.nav {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.nav-icon,
+.nav-item > span:first-child {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  flex-shrink: 0;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.nav-item.active {
+  background: rgba(85, 168, 245, 0.08);
+  color: var(--blue);
+  box-shadow: inset 3px 0 0 var(--blue);
+  font-weight: 500;
+}
+
+.nav-item:not(.active):hover {
+  background: rgba(85, 168, 245, 0.04);
+  color: var(--text-secondary);
+}
+
+.nav-item:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* Sidebar Footer */
+.rail-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 14px;
+  right: 14px;
+}
+
+.vanthion-logo {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.rail-footer p {
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+}
+
+.rail-footer span,
+.rail-footer .version-badge {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   6. MAIN WORKSPACE & TOP BAR
+   ========================================================================== */
+
+.main {
+  flex: 1;
+  padding: 0;
+  overflow-x: hidden;
+  margin-left: 240px;
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+/* Top Bar */
+.topbar {
+  height: 52px;
+  background-color: var(--bg-main);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-brand {
+  font-size: 15px;
+  letter-spacing: 3px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.topbar-brand small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.topbar-context {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.console-title {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.topbar .version {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.topbar-status {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+}
+
+.status-badge .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.status-badge.connected .status-dot {
+  background-color: var(--green);
+}
+
+.status-badge.disconnected .status-dot {
+  background-color: var(--alert);
+}
+
+.status-badge.replay .status-dot {
+  background-color: var(--cyan);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.topbar-stat {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.topbar-stat label,
+.topbar-stat span {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ==========================================================================
+   7. CONTENT AREA & PANEL SYSTEM
+   ========================================================================== */
+
+.content-area {
+  padding: 20px 24px;
+  max-width: 1600px;
+}
+
+/* Ensure clean page layout for top-level sections in main */
+.main > section:not(.content-area) {
+  margin-left: 24px;
+  margin-right: 24px;
+  max-width: 1600px;
+}
+
+.main > section:first-of-type {
+  margin-top: 20px;
+}
+
+.panel {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* ==========================================================================
+   8. CONNECTION & REPLAY CONTROL ROWS
+   ========================================================================== */
+
+.connection-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+}
+
+.port-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.replay-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 10px 16px;
+}
+
+.replay-row > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-right: 8px;
+}
+
+.replay-row > div:first-child strong {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.replay-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.replay-progress {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  margin-left: 4px;
+}
+
+/* ==========================================================================
+   9. FORM CONTROLS & BUTTONS
+   ========================================================================== */
+
+select,
+input[type="text"],
+input[type="number"] {
+  background-color: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+}
+
+select:focus-visible,
+input[type="text"]:focus-visible,
+input[type="number"]:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--blue);
+  cursor: pointer;
+}
+
+.button {
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius);
+  padding: 7px 16px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(1.15);
+  border-color: var(--blue);
+}
+
+.button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: none;
+  border-color: var(--border-active);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.button.primary {
+  background: linear-gradient(to bottom, #4A9EE8, #3A82C8);
+  color: #FFFFFF;
+  border-color: transparent;
+  font-weight: 500;
+}
+
+.button.primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.button.download {
+  color: var(--cyan);
+}
+
+.button.download:hover:not(:disabled) {
+  border-color: var(--cyan);
+}
+
+.icon-button {
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: var(--radius);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.icon-button:hover:not(:disabled) {
+  color: var(--blue);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.small-button {
+  padding: 5px 12px;
+  font-size: 12px;
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.small-button:hover:not(:disabled) {
+  filter: brightness(1.15);
+  border-color: var(--blue);
+}
+
+.small-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.small-button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   10. CONNECTION STATUS & STATS
+   ========================================================================== */
+
+#connection-status,
+.connection-status {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: auto;
+  min-width: 200px;
+  padding: 4px 16px;
+  border-left: 1px solid var(--border);
+}
+
+.connection-status strong {
+  display: block;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.connection-status small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.connection-status .status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--alert);
+  display: block;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.connection-status.connected .status-dot {
+  background-color: var(--green);
+  box-shadow: 0 0 8px rgba(84, 201, 154, 0.4);
+}
+
+.connection-status.error .status-dot {
+  background-color: var(--warning);
+  box-shadow: 0 0 8px rgba(242, 185, 75, 0.4);
+}
+
+.connection-status.replay .status-dot {
+  background-color: var(--cyan);
+  box-shadow: 0 0 8px rgba(99, 201, 216, 0.4);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.status-stat {
+  border-left: 1px solid var(--border);
+  padding-left: 16px;
+}
+
+.status-stat small {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.status-stat strong {
+  display: block;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+  color: var(--text);
+}
+
+/* ==========================================================================
+   11. VIEW PANELS & ROUTING
+   ========================================================================== */
+
+.view {
+  display: none;
+}
+
+.view.active-view {
+  display: block;
+}
+
+/* ==========================================================================
+   12. SUBSYSTEM STATUS GRID
+   ========================================================================== */
+
+.subsystem-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.subsystem-card {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.subsystem-icon {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 6px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subsystem-name {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.subsystem-status {
+  font-size: 11px;
+  margin-top: 4px;
+  color: var(--text-muted);
+}
+
+.subsystem-card.active {
+  border-color: rgba(84, 201, 154, 0.3);
+}
+
+.subsystem-card.active .subsystem-status {
+  color: var(--green);
+}
+
+.subsystem-card.no-data .subsystem-icon {
+  opacity: 0.4;
+}
+
+.subsystem-card.no-data .subsystem-status {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ==========================================================================
+   13. METRIC GRID & CARDS
+   ========================================================================== */
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.metric-card {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+/* Left Edge Accent Bar */
+.metric-card::before {
+  content: "";
+  width: 4px;
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  border-radius: 2px;
+}
+
+.metric-card.temperature::before {
+  background-color: var(--alert);
+}
+
+.metric-card.humidity::before {
+  background-color: var(--blue);
+}
+
+.metric-card.pressure::before {
+  background-color: var(--green);
+}
+
+.metric-label,
+.metric-card span:not(.badge) {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.metric-value,
+.metric-card strong {
+  font-size: 28px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  display: block;
+  margin: 8px 0 4px;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.metric-value i,
+.metric-card strong i {
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.metric-time,
+.metric-card small {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: block;
+}
+
+.metric-icon {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  color: var(--text-muted);
+  font-size: 18px;
+  opacity: 0.5;
+}
+
+.metric-card b {
+  display: none;
+}
+
+/* ==========================================================================
+   14. CHART GRID & TIME SERIES
+   ========================================================================== */
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.chart-card {
+  padding: 14px 16px;
+  position: relative;
+  min-height: 220px;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-head h2 {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.legend {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.legend.red {
+  color: var(--alert);
+}
+
+.legend.blue {
+  color: var(--blue);
+}
+
+.legend.green {
+  color: var(--green);
+}
+
+.chart-card canvas {
+  width: 100%;
+  height: 170px;
+  display: block;
+  margin-top: 6px;
+}
+
+.chart-empty {
+  position: absolute;
+  inset: 80px 0 0;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   15. STATISTICS & LOWER GRID
+   ========================================================================== */
+
+.lower-grid,
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.statistics,
+.recent,
+.session-controls,
+.messages {
+  min-height: 170px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.stat-grid > div {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+}
+
+.stat-grid span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.stat-grid strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  margin-top: 6px;
+  color: var(--text);
+}
+
+.stat-grid .bad strong {
+  color: var(--alert);
+}
+
+.stat-grid .warn strong {
+  color: var(--warning);
+}
+
+.stat-grid .info strong {
+  color: var(--blue);
+}
+
+.stat-footer {
+  display: flex;
+  gap: 40px;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+  padding-top: 10px;
+}
+
+.stat-footer span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.stat-footer strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* ==========================================================================
+   16. TABLES & TELEMETRY LOGS
+   ========================================================================== */
+
+.table-wrap,
+.log-table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: auto;
+  margin-top: 10px;
+  background-color: var(--bg-main);
+}
+
+.table-wrap {
+  max-height: 140px;
+}
+
+.log-table-wrap {
+  height: calc(100vh - 280px);
+  min-height: 300px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+th {
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 8px 10px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+td {
+  border-top: 1px solid var(--border-subtle);
+  padding: 6px 10px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+
+.empty-row td {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 24px;
+}
+
+.empty-row small {
+  color: var(--text-muted);
+  display: inline-block;
+  margin-top: 4px;
+}
+
+td.valid {
+  color: var(--green);
+  font-weight: 500;
+}
+
+td.invalid {
+  color: var(--alert);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   17. SYSTEM MESSAGES LOG
+   ========================================================================== */
+
+.message-list {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+  background-color: var(--bg-main);
+}
+
+.message {
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 2px 0;
+  font-family: var(--font-mono);
+  line-height: 1.4;
+}
+
+.message.warning {
+  color: var(--warning);
+}
+
+.message.error {
+  color: var(--alert);
+}
+
+.message.info {
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   18. SESSION CONTROLS & PAGE PANELS
+   ========================================================================== */
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.download {
+  margin-left: auto;
+}
+
+.page-panel {
+  padding: 20px;
+  margin-top: 0;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.page-heading h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.page-heading .eyebrow {
+  margin-bottom: 4px;
+}
+
+.page-heading p {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin: 0;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   19. SESSION VIEW
+   ========================================================================== */
+
+.session-page-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+}
+
+.session-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.session-summary > div {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+
+.session-summary span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.session-summary strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.pill {
+  border: 1px solid var(--border-active);
+  border-radius: 16px;
+  color: var(--text-muted);
+  padding: 5px 12px;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.pill.active {
+  color: var(--green);
+  border-color: rgba(84, 201, 154, 0.4);
+}
+
+.integrity-list {
+  margin-top: 16px;
+}
+
+.integrity-list div {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.integrity-list strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   20. INCIDENT INVESTIGATION VIEW
+   ========================================================================== */
+
+.incident-panel h2 {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 20px 0 8px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.empty-state {
+  border: 1px dashed var(--border-active);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  padding: 32px;
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.incident-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.incident-summary > div {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+
+.incident-summary span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.incident-summary strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+#incident-id,
+.incident-summary #incident-id {
+  color: var(--warning);
+}
+
+.incident-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.evidence-list {
+  margin-top: 4px;
+}
+
+.evidence-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.evidence-list span {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.evidence-list strong {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.incident-records {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  margin-top: 4px;
+}
+
+.incident-record {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.incident-record:last-child {
+  border-bottom: none;
+}
+
+.incident-record strong {
+  color: var(--alert);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   21. EVENT TIMELINE
+   ========================================================================== */
+
+.event-timeline {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.timeline-track {
+  position: relative;
+  height: 40px;
+  background-color: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  margin: 12px 0;
+}
+
+.timeline-event {
+  position: absolute;
+  height: 100%;
+  background-color: rgba(255, 100, 111, 0.15);
+  border-left: 2px solid var(--alert);
+  border-right: 2px solid var(--alert);
+}
+
+.timeline-markers {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.timeline-dot.onset {
+  background-color: var(--warning);
+}
+
+.timeline-dot.end {
+  background-color: var(--green);
+}
+
+/* ==========================================================================
+   22. SETTINGS VIEW
+   ========================================================================== */
+
+.settings-panel {
+  max-width: 900px;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.settings-grid label {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.settings-grid .check-row {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.settings-grid select {
+  width: 180px;
+}
+
+.source-note {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.source-note strong {
+  color: var(--text);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.source-note span {
+  display: block;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   23. ANIMATIONS & SCROLLBARS
+   ========================================================================== */
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-active);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ==========================================================================
+   24. RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 1400px) {
+  .subsystem-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .rail {
+    width: 200px;
+  }
+
+  .main {
+    margin-left: 200px;
+  }
+
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lower-grid,
+  .bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .session-page-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1100px) {
+  .session-page-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .rail {
+    width: 56px;
+    padding: 12px 8px;
+  }
+
+  .nav-item {
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .nav-item span.nav-label {
+    display: none;
+  }
+
+  .sat-logo,
+  .vanthion-logo {
+    max-width: 40px;
+  }
+
+  .rail-footer p,
+  .rail-footer > span {
+    display: none;
+  }
+
+  .main {
+    margin-left: 56px;
+  }
+
+  .subsystem-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .incident-summary,
+  .session-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .connection-status {
+    min-width: auto;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* V0.2.1 refinement: keep the console information-dense and quiet at laptop sizes. */
+
+.rail-brand { height: 102px; margin-bottom: 4px; }
+.sat-logo { width: 196px; max-height: 92px; }
+.main > section:not(.content-area) { margin-left: 18px; margin-right: 18px; }
+.main > section:first-of-type { margin-top: 14px; }
+.panel { border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.24); }
+.connection-row, .replay-row { margin-bottom: 10px; }
+.subsystem-section { margin-top: 10px; }
+.subsystem-header-bar { margin-bottom: 6px; }
+.subsystem-grid { gap: 8px; margin-bottom: 12px; }
+.subsystem-card { padding: 10px 12px; gap: 8px; border-radius: 5px; }
+.subsystem-card.thermal-active { box-shadow: none; }
+.metric-grid, .chart-grid, .lower-grid, .bottom-grid { gap: 10px; margin-bottom: 12px; }
+.metric-card { padding: 12px 16px; border-radius: 6px; }
+.metric-card strong { font-size: 25px; margin-top: 6px; }
+.chart-grid { grid-template-columns: 1.35fr 0.825fr 0.825fr; }
+.chart-card { min-height: 238px; padding: 12px 14px; }
+.chart-card canvas { height: 190px; }
+.chart-card.temperature-chart { border-color: #304b66; }
+.table-wrap { max-height: 180px; }
+.message-list { max-height: none; overflow-y: visible; }
+.statistics, .recent, .session-controls, .messages { min-height: 150px; }
+.incident-panel h2 { margin-top: 14px; }
+.incident-timeline-wrap { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle); }
+.timeline-steps { display: none; }
+
+@media (max-width: 1400px) { .chart-grid { grid-template-columns: 1.2fr 0.9fr 0.9fr; } }
+@media (max-width: 1200px) { .chart-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .sat-logo { width: 40px; max-height: 92px; }
+  .chart-grid { grid-template-columns: 1fr; }
+}
+
+/* Sidebar responsive guard: keep the rail usable without covering the footer. */
+@media (max-width: 900px) {
+  .rail { padding: 12px 8px; }
+  .rail-brand { height: 84px; margin-bottom: 12px; }
+  .rail-brand .sat-logo { width: 40px; height: 76px; }
+  .nav { justify-content: flex-start; }
+  .nav-item { padding: 10px 0; justify-content: center; }
+  .nav-item span.nav-label { display: none; }
+  .rail-footer { padding-top: 12px; margin-top: 12px; }
+  .rail-footer p, .rail-footer > span { display: none; }
+  .rail-footer .vanthion-logo { width: 40px; }
+}
+
+/* Synthetic autonomy demonstrator */
+.autonomy-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 18px 0 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.autonomy-source-label {
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-right: auto;
+}
+
+.autonomy-status {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.autonomy-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.autonomy-summary > div {
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+
+.autonomy-summary span,
+.autonomy-summary strong {
+  display: block;
+}
+
+.autonomy-summary span {
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+}
+
+.autonomy-summary strong {
+  color: var(--text);
+  font-size: 15px;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.autonomy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.autonomy-grid h2,
+.autonomy-timeline h2 {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .8px;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.autonomy-timeline {
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 18px;
+  padding-top: 16px;
+}
+
+.autonomy-timeline ol {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autonomy-timeline li {
+  align-items: baseline;
+  border-left: 2px solid var(--border-active);
+  display: flex;
+  gap: 12px;
+  padding: 6px 10px;
+}
+
+.autonomy-timeline li strong {
+  color: var(--blue);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-width: 150px;
+}
+
+.autonomy-timeline li span {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.autonomy-timeline li.recovered { border-color: var(--green); }
+.autonomy-timeline li.escalated { border-color: var(--alert); }
+
+.autonomy-chart-panel {
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-top: 18px;
+  padding: 14px 16px 10px;
+}
+
+.autonomy-chart-panel h2 { margin: 0; }
+.autonomy-chart-legend { color: var(--text-muted); font-size: 10px; }
+.autonomy-chart-panel canvas { display: block; height: 220px; margin-top: 8px; width: 100%; }
+.autonomy-chart-note { color: var(--text-muted); font-size: 11px; margin: 4px 0 0; }
+
+.autonomy-runtime {
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+.autonomy-runtime span { font-family: var(--font-mono); font-size: 10px; }
+.autonomy-runtime b { color: var(--text-secondary); font-weight: 500; }
+
+@media (max-width: 900px) {
+  .autonomy-summary,
+  .autonomy-grid { grid-template-columns: 1fr; }
+  .autonomy-source-label { flex-basis: 100%; }
+}

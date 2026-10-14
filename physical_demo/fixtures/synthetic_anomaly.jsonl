@@ -1,0 +1,14 @@
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":0,"device_time_ms":0,"temperature_c":22.0,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":1,"device_time_ms":500,"temperature_c":22.1,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":2,"device_time_ms":1000,"temperature_c":22.0,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":3,"device_time_ms":1500,"temperature_c":22.2,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":4,"device_time_ms":2000,"temperature_c":22.1,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":5,"device_time_ms":2500,"temperature_c":22.2,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":6,"device_time_ms":3000,"temperature_c":22.3,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":7,"device_time_ms":3500,"temperature_c":22.1,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":8,"device_time_ms":4000,"temperature_c":30.0,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":9,"device_time_ms":4500,"temperature_c":30.2,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":10,"device_time_ms":5000,"temperature_c":30.1,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":11,"device_time_ms":5500,"temperature_c":30.0,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":12,"device_time_ms":6000,"temperature_c":22.2,"sensor_valid":true,"sensor_status":"measurement_verified"}
+{"schema_version":1,"message_type":"telemetry","device_id":"synthetic-demo-01","seq":13,"device_time_ms":6500,"temperature_c":22.1,"sensor_valid":true,"sensor_status":"measurement_verified"}
