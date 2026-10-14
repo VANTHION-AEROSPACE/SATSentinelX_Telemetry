@@ -2,6 +2,7 @@ services:
   - type: web
     name: satsentinel-x-demo
     runtime: python
+    plan: free
     buildCommand: pip install -r physical_demo/requirements.txt
     startCommand: python physical_demo/dashboard.py --host 0.0.0.0 --port $PORT
     healthCheckPath: /
