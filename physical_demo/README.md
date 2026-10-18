@@ -1,6 +1,6 @@
 # SATSentinel-X physical demonstrator: vertical slice 1 and local console V0.2
 
-This slice implements only `ESP32 -> BME280 -> USB serial -> Python JSONL
+This slice implements only `ESP32 -> BMP280 -> USB serial -> Python JSONL
 receiver`. It is a ground-based engineering demonstrator, not a flight or
 space-qualified system. It does not use Detector v1, YAMCS, wireless links,
 cloud services, ML, or fault-response logic.
@@ -8,15 +8,15 @@ cloud services, ML, or fault-response logic.
 ## Hardware
 
 - ESP32 development board with USB data connection
-- BME280 breakout module
+- BMP280 breakout module (observed chip ID `0x58`)
 - Breadboard and jumper wires
 - USB data cable
 
-The firmware supports BME280 I2C address `0x76` and then `0x77`.
+The firmware targets the observed BMP280 chip ID `0x58` at I2C address `0x76`.
 
 Typical I2C wiring is:
 
-| BME280 | ESP32 |
+| BMP280 | ESP32 |
 |---|---|
 | VIN/3V3 | 3V3 |
 | GND | GND |
@@ -27,11 +27,15 @@ Use the breakout board's voltage requirements. Do not connect a 5 V signal to
 an ESP32 GPIO.
 
 The target board assumption is an **Espressif ESP32 Dev Module** using the
-Arduino-ESP32 core. Adafruit BME280 Library `2.2.4`, BusIO `1.16.2`, and
-Unified Sensor `1.1.14` are vendored with tagged commits and SHA-256 hashes in
-`firmware/dependencies.lock`. The BME280 source preserves Bosch compensation
-and upstream public APIs while adding a checked acquisition path; a plausible
-finite value is not sufficient for `measurement_verified`.
+Arduino-ESP32 core. The vendored Adafruit BMP280 Library `3.0.0` targets the
+observed `0x58` device. BusIO `1.16.2` and Unified Sensor `1.1.14` are
+vendored with hashes in `firmware/dependencies.lock`. The BMP280 source
+preserves its compensation code and adds checked transaction methods; a
+plausible finite value is not sufficient for `measurement_verified`.
+The installed upstream BMP280 float-read API does not expose transaction
+status, so this sketch emits `value_present_read_status_unverified` for
+plausible readings; only `measurement_verified` can satisfy physical
+acceptance.
 
 The acceptance gate counts only `measurement_verified` records. Physical
 acceptance remains blocked until the firmware is compiled and run on real
@@ -40,22 +44,20 @@ hardware.
 ## Firmware prerequisites
 
 Use Arduino CLI, Arduino IDE, or PlatformIO with the ESP32 board definition.
-The Arduino ESP32 core version is not yet locally verified and must be pinned
-when the toolchain is installed. The vendored libraries are:
+The requested Arduino ESP32 core version is `3.0.7`, but the installed local
+core is `3.3.12`; the build below was verified only with `3.3.12`. Do not
+claim `3.0.7` compatibility until that exact core is installed and compiled.
+The vendored libraries are:
 
-- Adafruit BME280 Library
+- Adafruit BMP280 Library 3.0.0
 - Adafruit BusIO 1.16.2
 - Adafruit Unified Sensor 1.1.14
 
-Once the toolchain is installed, the planned Arduino CLI commands are:
+The verified command (using the installed 3.3.12 core) is:
 
 ```text
 arduino-cli compile --fqbn esp32:esp32:esp32 --libraries firmware/libraries firmware/esp32_bme280
 ```
-
-The compile command is an instruction only; this environment has no Arduino
-CLI, ESP32 compiler, or board core. Do not install dependencies without
-separate approval.
 
 Open `firmware/esp32_bme280/esp32_bme280.ino`, select the board and USB port,
 compile, and upload. The firmware emits one UTF-8 JSON object followed by `\n`
@@ -120,7 +122,7 @@ black background, so the dashboard uses contained screen blending to avoid a
 black rectangle on the navy interface.
 
 This dashboard is software-only. Its tests and synthetic inputs do not
-constitute the 60-second ESP32+BME280 acceptance test, sensor accuracy,
+constitute the 60-second ESP32+BMP280 acceptance test, sensor accuracy,
 operational performance, or flight readiness. Physical acceptance still
 requires the procedure below with real hardware.
 
@@ -142,11 +144,41 @@ Incident view displays the detector rule, onset device time, affected channel,
 observed values, threshold, and exact sequence references. **Download Evidence
 JSON** exports the same incident object shown in the UI.
 
+The exported incident is also the reproducibility evidence bundle: it includes
+the detector configuration, source fixture path and type, stable relevant
+source records (baseline plus event), record references, a device-time incident
+timestamp, and deterministic replay/test-result fields. Host arrival metadata
+is intentionally excluded from those stable source records. The bundle remains
+synthetic and does not represent a real spacecraft fault or flight result.
+
 This detector is `synthetic_temperature_threshold_v1`. It is a deterministic
 demonstration detector only. It does not invoke Detector v1, use ESA telemetry,
 reproduce the ESA 30/30 result, validate physical sensor performance, or
 establish operational or flight readiness. Recorded replay is intentionally a
 separate source type and is not conflated with live hardware.
+
+## P2 synthetic detector validation
+
+Run the deterministic validation suite with:
+
+```text
+python physical_demo/detector_validation.py
+```
+
+It evaluates the unchanged strict rule `temperature_c > 26.0` across the
+existing canonical replay fixture plus normal, detectable-anomaly,
+threshold-boundary, missing-data, invalid-sensor, and recovery-to-normal
+scenarios. Ground truth is defined by inclusive sequence
+intervals. Sample metrics use only accepted `measurement_verified` records;
+event metrics count one scenario-level event, so correlated samples are not
+treated as independent experiments. Missing or invalid anomaly observations are
+reported as event-level misses and excluded from sample-level labels.
+
+P2.1 also reports telemetry-health metrics independently for missing required
+fields, explicitly invalid sensor records, and host-observed stale gaps over the
+existing two-second boundary. These are observability/transport faults, not
+detector false negatives. The original detector metrics exclude the
+health-only stale-data scenario and are preserved unchanged.
 
 ## Protocol contract
 
@@ -167,7 +199,7 @@ absent environmental measurements.
 
 ## 60-second physical acceptance procedure
 
-1. Connect the BME280 as shown above and upload the firmware.
+1. Connect the BMP280 as shown above and upload the firmware.
 2. Identify the actual Windows COM port and close any serial monitor using it.
 3. Run the receiver for 60 seconds, saving `run.jsonl`.
 4. Confirm the receiver exits with status 0, records at least 250
@@ -181,7 +213,7 @@ absent environmental measurements.
 6. Inspect the JSONL file after the run and preserve its SHA-256 hash with the
    test date, board, sensor, COM port, and firmware hash.
 
-This acceptance gate is **BLOCKED until a real ESP32 and BME280 are tested**.
+This acceptance gate is **BLOCKED until a real ESP32 and BMP280 are tested**.
 Synthetic host tests are not physical acceptance. No stuck-sensor claim is
 made in this slice; a later test must apply a defined stimulus and explicitly
 inject or create a stuck value.

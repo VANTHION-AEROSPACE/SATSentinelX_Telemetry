@@ -673,6 +673,19 @@ input[type="checkbox"] {
   color: var(--text);
 }
 
+.status-stat .quality-label {
+  color: var(--text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.status-stat .quality-label.fresh_verified { color: var(--green); }
+.status-stat .quality-label.fresh_unverified { color: var(--warning); }
+.status-stat .quality-label.degraded,
+.status-stat .quality-label.stale { color: var(--alert); }
+.status-stat .quality-label.complete { color: var(--cyan); }
+
 /* ==========================================================================
    11. VIEW PANELS & ROUTING
    ========================================================================== */

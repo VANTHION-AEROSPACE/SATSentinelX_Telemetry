@@ -1,0 +1,55 @@
+{
+  "arduino_esp32": {
+    "version": "3.0.7",
+    "requirement": "Arduino ESP32 core 3.0.7 with TwoWire::begin(sda, scl)",
+    "status": "3.0.7 not installed; build verified with 3.3.12 only",
+    "observed_installed_version": "3.3.12"
+  },
+  "sources": {
+    "Adafruit BMP280 Library": {
+      "version": "3.0.0",
+      "source": "local installed library; upstream commit and release archive not independently verified",
+      "files": {
+        "libraries/Adafruit_BMP280/Adafruit_BMP280.cpp": "C8CC5F4D3B43DF89448B509077B93C305EF240C0CF38F06A09FC2103BA2832C9",
+        "libraries/Adafruit_BMP280/Adafruit_BMP280.h": "6BD6F0C1343A9E3627C82717F4B47FFE08D305B7394A27B2D336073F32343E86",
+        "libraries/Adafruit_BMP280/library.properties": "3FD46B6BE2E95DDABC5AAF499D757D6AD7B786E6FA102055C895E569555D2D51"
+      }
+    },
+    "Adafruit BME280 Library": {
+      "version": "2.2.4",
+      "commit": "9412f3d1a2e334a3415d79df706dad02925488aa",
+      "archive_sha256": "34749E9E9DB3F2979ACAF6022F570F82D8DDB92AA6C8B76C7A6609AACE5D701F",
+      "files": {
+        "libraries/Adafruit_BME280/Adafruit_BME280.cpp": "1C7231C33AB43E409A8BDD29821FD2BCEC05FB86AEA988712584DC5771E3CC27",
+        "libraries/Adafruit_BME280/Adafruit_BME280.h": "427D61B1EAFC3998B98A27C50A4EE6A961B32F47668030A93F3210AA7B9C34ED",
+        "libraries/Adafruit_BME280/library.properties": "90C9661F701E4186928518C02F0BD1B8081CFF210AE0358563873E3E79EEF2E3"
+      },
+      "upstream_files_before_patch": {
+        "Adafruit_BME280.cpp": "83DED4CE81A09ED9474249C18DCD7B24444AAF9CDB9EB2CAA31A500469631F66",
+        "Adafruit_BME280.h": "7BE088272F68E246C88D3EC8155FC9FD4AE43CA39546AFA14BC5EFA6F8621CCC"
+      },
+      "patch": "local checked-transaction API; upstream public APIs retained"
+    },
+    "Adafruit BusIO": {
+      "version": "1.16.2",
+      "commit": "ddf66b491e0a9ccb0b6ddd405c2864fecc6fe87f",
+      "archive_sha256": "AAEEE147A16A2957C115FBCCB1FC030CCB738C36DAF0A800085F99818073CDA4",
+      "files": {
+        "libraries/Adafruit_BusIO/Adafruit_I2CDevice.cpp": "9DFBAEE33977A3944923208E1B23C2AD03378F06D231C270FDEC47F77356E210",
+        "libraries/Adafruit_BusIO/Adafruit_I2CDevice.h": "E2F10682A28836EC20B025BC26034D15129493AFCCD6EEB1A574A3594B9B2628",
+        "libraries/Adafruit_BusIO/Adafruit_SPIDevice.cpp": "7FF16A9A6D19C87EBC839C371663BDB5BCF952F6409343965B2162A1228D7A69",
+        "libraries/Adafruit_BusIO/Adafruit_SPIDevice.h": "3E7457049B5FF92AABAE609E644134EC6CDB263460BA05A72DE2664882F67078",
+        "libraries/Adafruit_BusIO/library.properties": "2BDE5E94FDEE1F415C1940CBE2092D4EB983D7BEDD45D9AE7BC914622ACD5455"
+      }
+    },
+    "Adafruit Unified Sensor": {
+      "version": "1.1.14",
+      "commit": "7b2473b6b24ae340f41685b5f5b2b90ad896db04",
+      "archive_sha256": "78DBE48A0C308AE275558C8039DB98310E5B6B74696E8F032EB9266EB1FBD25F",
+      "files": {
+        "libraries/Adafruit_Unified_Sensor/Adafruit_Sensor.h": "046A560C7E5A54AF56E19DC952FC90BBE76A8B43BBC7DB4E47E7358557BAF9D8",
+        "libraries/Adafruit_Unified_Sensor/library.properties": "AF4A837E36A0A5B6C0ABDEEFC4357CCC2B847FA39822856F575FC78E3BF9A101"
+      }
+    }
+  }
+}

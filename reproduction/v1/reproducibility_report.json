@@ -1,0 +1,29 @@
+{
+  "absolute_path_injection": "runtime-only",
+  "authoritative_detector_sha256": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+  "authoritative_source_check": "PASS",
+  "channel_rows": 60,
+  "classification": "detected / strong evidence",
+  "detector_sha256": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+  "environment_matches_pinned": false,
+  "event_rows": 30,
+  "event_score": 0.75,
+  "fixture_sha256": {
+    "fixture/anomaly_types.csv": "feb07b0ec541fd7243c03be372f02bd4dc0f84fb036ce0a29e0ba19c0313db74",
+    "fixture/labels.csv": "d6bf4c490e0356695f4f3528d321a729a1d9199f45dd1a585dfe14c571fd0bd2",
+    "fixture/telemetry.csv": "329f5e982d3d51324c4922e67798306664a7293a219dc2446e6975815781fb6f"
+  },
+  "numpy": "2.4.6",
+  "output_sha256": {
+    "class3_detector_channel_results.csv": "0dff6d76c56bfa83e7172058e0d8be15751fb1533ad4112dc9b722c3a344bef3",
+    "class3_detector_results.csv": "4d712c79807ff8702b028395dbb64120ab6a6638715beada5817b8504f977363"
+  },
+  "pandas": "2.2.2",
+  "pinned_requirements": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.2"
+  },
+  "python": "3.11.9",
+  "runs": 2,
+  "status": "PASS"
+}

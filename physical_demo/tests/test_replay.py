@@ -54,6 +54,26 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual([r["seq"] for r in incident["record_refs"]], [8, 9, 10, 11])
         self.assertEqual(incident["onset_device_time_ms"], 4000)
         self.assertEqual(incident["observed_values_c"], [30.0, 30.2, 30.1, 30.0])
+        self.assertEqual(incident["incident_timestamp_device_time_ms"], 4000)
+        self.assertEqual([record["seq"] for record in incident["source_records"]], [0, 1, 2, 3, 8, 9, 10, 11])
+        self.assertEqual(incident["test_results"]["validation_status"], "PASS")
+        self.assertTrue(incident["test_results"]["deterministic"])
+
+    def test_incident_evidence_is_deterministic_and_replayable(self):
+        frames = load_jsonl(FIXTURE)
+
+        def run_once():
+            receiver = TelemetryReceiver()
+            for frame in frames:
+                self.assertIsNotNone(receiver.parse_line(frame))
+            return detect(receiver.records)
+
+        first, second = run_once(), run_once()
+        self.assertEqual(first, second)
+        self.assertEqual(first["source_fixture"], "fixtures/synthetic_anomaly.jsonl")
+        self.assertEqual(first["source_type"], "synthetic_replay")
+        self.assertEqual(first["detector"]["threshold_c"], THRESHOLD_C)
+        self.assertEqual(first["test_results"]["replay_record_count"], 14)
 
     def test_dashboard_replay_produces_incident_and_exportable_records(self):
         session = DashboardSession()

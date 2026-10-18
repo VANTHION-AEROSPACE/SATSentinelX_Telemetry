@@ -7,7 +7,12 @@
 - One JSON object per line, terminated by LF; CRLF is accepted by the host.
 - Baud: 115200, 8 data bits, no parity, 1 stop bit.
 - Maximum accepted host line length: 4096 bytes.
-- Each device line is a telemetry message; there are no multiline messages.
+- Telemetry messages are one JSON object per line; there are no multiline
+  messages. The firmware may also emit the bounded startup control messages
+  `{"message":"BMP280_READY","chip_id":88}` or
+  `{"message":"BMP280_INIT_FAILED"}`. The host records these as startup
+  events, never treats them as telemetry, and never counts them toward
+  acceptance. Other non-telemetry lines remain validation errors.
 
 ## Device message schema
 
@@ -46,14 +51,20 @@ that as a valid-schema sensor-invalid message, not as a valid temperature.
   success is not verified.
 
 The firmware emits `sensor_init_failed`, `sensor_bus_unavailable`,
-`sensor_value_invalid`, or `measurement_verified`. The unverified value
-`value_present_read_status_unverified` remains accepted by the parser only so
-older logs remain auditable; it never counts toward physical acceptance.
+`sensor_value_invalid`, or `value_present_read_status_unverified` when using
+the installed upstream float-read API. That API does not expose read
+transaction status, so a plausible in-range value is intentionally unverified
+and never counts toward physical acceptance. `measurement_verified` remains
+reserved for a checked acquisition implementation and is not emitted by this
+sketch.
 
-The vendored BME280 2.2.4 source retains the upstream float
-`readTemperature()` API and adds a separate status-returning path. It checks
-forced-measurement completion and uses the documented BusIO Boolean result for
-chip-ID, calibration, configuration, status, and temperature transactions.
+The observed hardware is a BMP280 (`chip_id` `0x58`), not a BME280 (`0x60`).
+The vendored Adafruit BMP280 3.0.0 source retains the upstream float APIs and
+adds a separate checked path. It checks chip-ID, calibration, configuration,
+forced-measurement completion, status, temperature and pressure transactions.
+`measurement_verified` means only that the checked acquisition completed and
+the values passed schema/range validation; it does not establish calibration
+accuracy, sensor health beyond those checks, or flight qualification.
 Only that checked path may emit `measurement_verified`.
 
 The source versions and hashes are recorded in
@@ -104,6 +115,12 @@ The receiver stops at the requested duration or EOF. A serial timeout is
 recorded as an event and does not fabricate telemetry. A serial exception is
 recorded as a disconnect; this first slice fails closed, preserves the partial
 JSONL file and does not automatically reconnect.
+
+Framing diagnostics record only bounded metadata: a partial frame reports its
+byte count, while an over-limit frame reports `bytes_at_least=4097`; payload
+contents are never copied into diagnostics. This distinguishes a short
+connection-boundary partial frame from a genuine over-limit frame without
+weakening the 4096-byte limit.
 
 For the 60-second acceptance run, no valid telemetry gap may exceed 2 seconds;
 the run must contain at least 250 `measurement_verified` records and zero

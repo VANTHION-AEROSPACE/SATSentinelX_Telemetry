@@ -47,3 +47,23 @@ temp/
 # Generated reports / caches
 *.cache
 *.tmp
+
+# Generated physical-demo build artifacts
+physical_demo/build/
+physical_demo/firmware/**/build/
+
+# Local telemetry captures and run outputs
+physical_demo/runs/
+physical_demo/*.bin
+physical_demo/*.jsonl
+!physical_demo/fixtures/*.jsonl
+
+# Temporary backups
+*.bak
+*.before_*
+*.pre_*
+
+# Python test and tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

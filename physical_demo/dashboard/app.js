@@ -837,6 +837,13 @@ function render(data) {
 
   updateConnectionControls();
   $("last-message").textContent = ageLabel(data.last_message_age_s);
+  const quality = data.telemetry_quality || {state: "no_data", reason: "No telemetry quality reported"};
+  const qualityLabel = $("telemetry-quality");
+  if (qualityLabel) {
+    qualityLabel.textContent = quality.state.replaceAll("_", " ").toUpperCase();
+    qualityLabel.className = `quality-label ${quality.state}`;
+    qualityLabel.title = quality.reason || "";
+  }
   $("uptime").textContent = duration(data.uptime_s);
 
   const records = data.records || [];

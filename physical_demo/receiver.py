@@ -43,7 +43,133 @@ def _is_open(stream: Any) -> bool:
     return True
 
 
-def read_framed_line(stream: Any, max_bytes: int = MAX_LINE_BYTES) -> tuple[str, bytes | None]:
+def _frame_shape(line: str | bytes) -> str:
+    """Return bounded, payload-safe diagnostics for one rejected frame."""
+    if isinstance(line, bytes):
+        raw = line
+    else:
+        raw = line.encode("utf-8", errors="replace")
+    prefix = raw[:16].hex()
+    return f"bytes={len(raw)}:prefix_hex={prefix}"
+
+
+class BufferedLFReader:
+    """Read one LF-delimited frame at a time from a bounded byte stream."""
+
+    def __init__(self, stream: Any, *, max_bytes: int = MAX_LINE_BYTES, read_size: int = MAX_LINE_BYTES) -> None:
+        if max_bytes < 1 or read_size < 1:
+            raise ValueError("max_bytes and read_size must be positive")
+        self.stream = stream
+        self.max_bytes = max_bytes
+        self.read_size = read_size
+        self._buffer = bytearray()
+        self._oversized = False
+        self._discarded_bytes = 0
+        self._discarding_until_lf = False
+
+    def _diagnostic(self, diagnostics: list[str] | None, value: str) -> None:
+        if diagnostics is not None:
+            diagnostics.append(value)
+
+    def _read_chunk(self) -> tuple[str, bytes | None]:
+        chunk = self.stream.read(self.read_size)
+        if chunk in (b"", "") or chunk is None:
+            return ("empty", None)
+        if isinstance(chunk, str):
+            try:
+                chunk = chunk.encode("utf-8", errors="strict")
+            except UnicodeEncodeError:
+                return ("invalid_stream_encoding", None)
+        if not isinstance(chunk, (bytes, bytearray)):
+            return ("invalid_stream_data", None)
+        return ("chunk", bytes(chunk))
+
+    def _consume_until_lf(self) -> bool:
+        """Discard the current damaged frame but retain bytes after its LF."""
+        while True:
+            kind, chunk = self._read_chunk()
+            if kind != "chunk":
+                return False
+            index = chunk.find(b"\n")
+            if index >= 0:
+                self._buffer.extend(chunk[index + 1:])
+                return True
+
+    def _finish_buffered_frame(self, diagnostics: list[str] | None) -> tuple[str, bytes | None] | None:
+        index = self._buffer.find(b"\n")
+        if index < 0:
+            return None
+        frame = bytes(self._buffer[:index])
+        del self._buffer[:index + 1]
+        if self._oversized or len(frame) > self.max_bytes:
+            self._diagnostic(diagnostics, f"bytes_at_least={self.max_bytes + 1}")
+            self._oversized = False
+            self._discarded_bytes = 0
+            return ("oversized", None)
+        return ("line", frame)
+
+    def read_line(self, diagnostics: list[str] | None = None) -> tuple[str, bytes | None]:
+        while True:
+            if self._discarding_until_lf:
+                if self._consume_until_lf():
+                    self._discarding_until_lf = False
+                    continue
+                return ("timeout" if _is_open(self.stream) else "eof", None)
+
+            finished = self._finish_buffered_frame(diagnostics)
+            if finished is not None:
+                return finished
+
+            kind, chunk = self._read_chunk()
+            if kind == "invalid_stream_encoding":
+                self._diagnostic(diagnostics, "invalid_utf8")
+                return ("invalid_utf8", None)
+            if kind == "invalid_stream_data":
+                self._diagnostic(diagnostics, "unexpected_stream_type")
+                return ("invalid_stream_data", None)
+            if kind == "empty":
+                if self._oversized:
+                    self._diagnostic(diagnostics, f"bytes_at_least={self._discarded_bytes}")
+                    open_at_timeout = _is_open(self.stream)
+                    if open_at_timeout:
+                        if not self._consume_until_lf():
+                            self._discarding_until_lf = True
+                    self._oversized = False
+                    self._discarded_bytes = 0
+                    return ("oversized_partial", None)
+                if self._buffer:
+                    self._diagnostic(diagnostics, f"partial_bytes={len(self._buffer)}")
+                    if _is_open(self.stream):
+                        # A read timeout is not a frame boundary. Preserve
+                        # partial bytes until more data arrives or EOF occurs.
+                        return ("timeout", None)
+                    return ("eof_partial", None)
+                return ("timeout" if _is_open(self.stream) else "eof", None)
+
+            assert chunk is not None
+            if self._oversized:
+                index = chunk.find(b"\n")
+                if index >= 0:
+                    self._buffer.extend(chunk[index + 1:])
+                    self._oversized = False
+                    self._discarded_bytes = 0
+                    self._diagnostic(diagnostics, f"bytes_at_least={self.max_bytes + 1}")
+                    return ("oversized", None)
+                self._discarded_bytes = min(self.max_bytes + 1, self._discarded_bytes + len(chunk))
+                continue
+
+            self._buffer.extend(chunk)
+            if len(self._buffer) > self.max_bytes and b"\n" not in self._buffer:
+                self._oversized = True
+                self._discarded_bytes = self.max_bytes + 1
+                self._buffer.clear()
+
+
+def read_framed_line(
+    stream: Any,
+    max_bytes: int = MAX_LINE_BYTES,
+    diagnostics: list[str] | None = None,
+) -> tuple[str, bytes | None]:
     """Read one bounded LF-delimited frame from a bytes or text stream.
 
     Empty reads from an open stream are timeouts. Closed streams are EOF. A
@@ -52,32 +178,63 @@ def read_framed_line(stream: Any, max_bytes: int = MAX_LINE_BYTES) -> tuple[str,
     """
     buffer = bytearray()
     oversized = False
+    discarded_bytes = 0
+
+    def diagnostic(value: str) -> None:
+        if diagnostics is not None:
+            diagnostics.append(value)
+
+    def discard_until_lf() -> None:
+        """Resynchronize after a timed-out frame without buffering payload."""
+        while True:
+            remainder = stream.read(1)
+            if remainder in (b"", "") or remainder is None:
+                return
+            if isinstance(remainder, str):
+                remainder = remainder.encode("utf-8", errors="replace")
+            if isinstance(remainder, (bytes, bytearray)) and b"\n" in remainder:
+                return
+
     while True:
         chunk = stream.read(1)
         if chunk in (b"", "") or chunk is None:
             if oversized:
+                diagnostic(f"bytes_at_least={discarded_bytes}")
+                open_at_timeout = _is_open(stream)
+                if open_at_timeout:
+                    discard_until_lf()
                 return ("oversized_partial", None)
             if buffer:
-                return ("partial_timeout" if _is_open(stream) else "eof_partial", None)
+                diagnostic(f"partial_bytes={len(buffer)}")
+                open_at_timeout = _is_open(stream)
+                if open_at_timeout:
+                    discard_until_lf()
+                return ("partial_timeout" if open_at_timeout else "eof_partial", None)
             return ("timeout" if _is_open(stream) else "eof", None)
         if isinstance(chunk, str):
             try:
                 chunk = chunk.encode("utf-8", errors="strict")
             except UnicodeEncodeError:
+                diagnostic("invalid_utf8")
                 return ("invalid_utf8", None)
         if not isinstance(chunk, (bytes, bytearray)):
+            diagnostic("unexpected_stream_type")
             return ("invalid_stream_data", None)
         if b"\n" in chunk:
             before, _, _ = bytes(chunk).partition(b"\n")
             if not oversized:
                 buffer.extend(before)
             if oversized or len(buffer) > max_bytes:
+                diagnostic(f"bytes_at_least={max_bytes + 1}")
                 return ("oversized", None)
             return ("line", bytes(buffer))
         if not oversized:
             buffer.extend(chunk)
             if len(buffer) > max_bytes:
                 oversized = True
+                discarded_bytes = max_bytes + 1
+        else:
+            discarded_bytes = min(max_bytes + 1, discarded_bytes + len(chunk))
 
 
 class TelemetryReceiver:
@@ -89,12 +246,18 @@ class TelemetryReceiver:
         self.events: list[str] = []
         self.records: list[dict[str, Any]] = []
         self.max_host_gap_s = 0.0
+        self.run_end_gap_s = 0.0
 
     def reject(self, reason: str) -> None:
         self.errors.append(reason)
 
     def note_event(self, event: str) -> None:
         self.events.append(event)
+
+    def note_run_end(self, end_monotonic: float) -> None:
+        """Record silence between the last accepted record and run end."""
+        if self.previous_host_monotonic is not None:
+            self.run_end_gap_s = max(0.0, end_monotonic - self.previous_host_monotonic)
 
     def parse_line(
         self,
@@ -111,6 +274,7 @@ class TelemetryReceiver:
                 line = line.decode("utf-8", errors="strict")
             except UnicodeDecodeError:
                 self.reject("invalid_utf8")
+                self.note_event("rejected:invalid_utf8:" + _frame_shape(line))
                 return None
         if not isinstance(line, str):
             self.reject("invalid_line_type")
@@ -122,9 +286,16 @@ class TelemetryReceiver:
             obj = json.loads(line)
         except json.JSONDecodeError:
             self.reject("invalid_json")
+            self.note_event("rejected:invalid_json:" + _frame_shape(line))
             return None
         if not isinstance(obj, dict):
             self.reject("message_not_object")
+            return None
+        if obj == {"message": "BMP280_READY", "chip_id": 88}:
+            self.note_event("startup_status:BMP280_READY")
+            return None
+        if obj == {"message": "BMP280_INIT_FAILED"}:
+            self.note_event("startup_status:BMP280_INIT_FAILED")
             return None
         missing = [key for key in REQUIRED if key not in obj]
         if missing:
@@ -205,9 +376,15 @@ class TelemetryReceiver:
         verified_sensor = sum(1 for record in self.records if record["sensor_valid"] and record["sensor_status"] == VERIFIED_SENSOR_STATUS)
         unverified_sensor = sum(1 for record in self.records if record["sensor_status"] == UNVERIFIED_SENSOR_STATUS)
         invalid_sensor = sum(1 for record in self.records if not record["sensor_valid"])
-        sequence_ok = bool(self.records) and self.records[0]["seq"] == 0 and all(
+        # A capture may attach to an already-running device. Requiring the first
+        # captured sequence to be zero confuses capture startup with stream integrity.
+        # Validate continuity within the captured window; expose the starting-at-zero
+        # property separately for runs that explicitly test device boot behavior.
+        sequence_contiguous = bool(self.records) and all(
             record["sequence_status"] in {"first", "contiguous"} for record in self.records
         )
+        sequence_starts_at_zero = bool(self.records) and self.records[0]["seq"] == 0
+        sequence_ok = sequence_contiguous
         device_time_ok = bool(self.records) and all(
             record["device_time_status"] in {"first", "increasing"} for record in self.records
         )
@@ -225,8 +402,11 @@ class TelemetryReceiver:
             reasons.append("sensor_invalid_records_present")
         if self.errors:
             reasons.append("validation_errors_present")
-        if self.max_host_gap_s > MAX_ACCEPTANCE_GAP_SECONDS:
+        max_gap_s = max(self.max_host_gap_s, self.run_end_gap_s)
+        if max_gap_s > MAX_ACCEPTANCE_GAP_SECONDS:
             reasons.append("telemetry_gap_over_2_seconds")
+        if "serial_timeout" in self.events:
+            reasons.append("serial_timeout_present")
         if not sequence_ok:
             reasons.append("sequence_order_invalid")
         if not device_time_ok:
@@ -245,11 +425,48 @@ class TelemetryReceiver:
             "errors": list(self.errors),
             "events": list(self.events),
             "failure_reasons": reasons,
-            "max_host_gap_s": self.max_host_gap_s,
+            "max_host_gap_s": max_gap_s,
             "sequence_order_ok": sequence_ok,
+            "sequence_contiguous": sequence_contiguous,
+            "sequence_starts_at_zero": sequence_starts_at_zero,
             "device_time_strictly_increasing": device_time_ok,
             "duration_ok": duration_ok,
         }
+
+
+class RawTeeStream:
+    """Record exact bytes returned by the serial API without changing them."""
+
+    def __init__(self, stream: Any, raw_output: Any) -> None:
+        self._stream = stream
+        self._raw_output = raw_output
+        self._started = time.monotonic()
+        self._total_bytes = 0
+        self.trace: list[dict[str, Any]] = []
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._stream, name)
+
+    def read(self, size: int = -1) -> Any:
+        data = self._stream.read(size)
+        raw = bytes(data) if isinstance(data, (bytes, bytearray, memoryview)) else b""
+        before = self._total_bytes
+        if raw:
+            self._raw_output.write(raw)
+            self._raw_output.flush()
+            self._total_bytes += len(raw)
+        self.trace.append({
+            "read_index": len(self.trace) + 1,
+            "monotonic_elapsed_seconds": round(time.monotonic() - self._started, 6),
+            "requested_bytes": size,
+            "returned_bytes": len(raw),
+            "captured_bytes": len(raw),
+            "start_offset": before,
+            "cumulative_captured_bytes": self._total_bytes,
+            "first_8_hex": raw[:8].hex(),
+            "last_8_hex": raw[-8:].hex(),
+        })
+        return data
 
 
 def receive_stream(
@@ -261,26 +478,53 @@ def receive_stream(
     clock: Callable[[], float] = time.monotonic,
 ) -> dict[str, Any]:
     started = clock()
+    framer = BufferedLFReader(stream)
+
+    def finish(ended_reason: str) -> dict[str, Any]:
+        ended = clock()
+        receiver.note_run_end(ended)
+        return {"ended_reason": ended_reason, "elapsed_seconds": ended - started}
+
     while clock() - started < duration:
         try:
-            kind, frame = read_framed_line(stream)
+            framing_diagnostics: list[str] = []
+            kind, frame = framer.read_line(diagnostics=framing_diagnostics)
         except Exception as exc:
             receiver.note_event("serial_disconnect:" + type(exc).__name__)
-            return {"ended_reason": "serial_disconnect", "elapsed_seconds": clock() - started}
+            return finish("serial_disconnect")
         if kind == "timeout":
             receiver.note_event("serial_timeout")
             continue
         if kind in {"eof", "eof_partial"}:
-            receiver.note_event(kind)
-            return {"ended_reason": "eof", "elapsed_seconds": clock() - started}
+            suffix = ":" + ":".join(framing_diagnostics) if framing_diagnostics else ""
+            receiver.note_event(kind + suffix)
+            return finish("eof")
         if kind != "line":
+            suffix = ":" + ":".join(framing_diagnostics) if framing_diagnostics else ""
+            receiver.note_event("framing:" + kind + suffix)
             receiver.reject(kind)
             continue
         record = receiver.parse_line(frame or b"", host_monotonic=clock())
         if record is not None:
             output.write(json.dumps(record, separators=(",", ":"), allow_nan=False) + "\n")
             output.flush()
-    return {"ended_reason": "duration", "elapsed_seconds": clock() - started}
+    return finish("duration")
+
+
+def open_serial_port(serial_module: Any, port_name: str, baud: int, timeout: float = 1) -> Any:
+    """Configure modem-control lines before opening the USB serial port."""
+    port = serial_module.Serial(port=None, baudrate=baud, timeout=timeout)
+    port.port = port_name
+    try:
+        port.dtr = False
+    except Exception:
+        pass
+    try:
+        port.rts = False
+    except Exception:
+        pass
+    port.open()
+    return port
 
 
 def main() -> int:
@@ -292,6 +536,8 @@ def main() -> int:
     parser.add_argument("--baud", type=int, default=115200)
     args = parser.parse_args()
     report_path = args.report or args.output.with_suffix(".acceptance.json")
+    raw_path = args.output.with_suffix(".raw.bin")
+    trace_path = args.output.with_suffix(".raw-trace.json")
 
     try:
         import serial  # type: ignore
@@ -302,20 +548,32 @@ def main() -> int:
     receiver = TelemetryReceiver()
     started_utc = utc_now()
     try:
-        port = serial.Serial(args.port, args.baud, timeout=1)
+        port = open_serial_port(serial, args.port, args.baud, timeout=1)
     except Exception as exc:
         receiver.note_event("serial_open_error:" + type(exc).__name__)
         run = {"ended_reason": "serial_open_error", "elapsed_seconds": 0.0}
     else:
+        tee = None
         try:
-            with port, args.output.open("w", encoding="utf-8", newline="\n") as output:
-                run = receive_stream(port, output, receiver, duration=args.duration)
+            with port, args.output.open("w", encoding="utf-8", newline="\n") as output, raw_path.open("wb") as raw_output:
+                tee = RawTeeStream(port, raw_output)
+                run = receive_stream(tee, output, receiver, duration=args.duration)
         except Exception as exc:
             receiver.note_event("serial_runtime_error:" + type(exc).__name__)
             run = {"ended_reason": "serial_runtime_error", "elapsed_seconds": 0.0}
+        finally:
+            if tee is not None:
+                try:
+                    trace_path.write_text(json.dumps(tee.trace, indent=2), encoding="utf-8")
+                except Exception as exc:
+                    receiver.note_event("raw_trace_write_error:" + type(exc).__name__)
 
     summary = receiver.acceptance_summary(**run)
     summary.update({"started_utc": started_utc, "ended_utc": utc_now(), "output": str(args.output), "report": str(report_path)})
+    if raw_path.is_file():
+        summary["raw_output"] = str(raw_path)
+    if trace_path.is_file():
+        summary["raw_trace"] = str(trace_path)
     report_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(json.dumps(summary, separators=(",", ":")))
     return 0 if summary["status"] == "PASS" else 1

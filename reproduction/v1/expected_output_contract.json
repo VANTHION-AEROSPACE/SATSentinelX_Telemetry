@@ -1,0 +1,27 @@
+{
+  "scope": "synthetic semantic smoke output contract",
+  "event_row_count": 30,
+  "channel_row_count": 60,
+  "event_score": 0.75,
+  "classification": "detected / strong evidence",
+  "channel_max_robust_deviation": 5.73317145555106,
+  "event_columns": [
+    "event_id", "class", "category", "dimensionality", "locality", "start", "end",
+    "duration_seconds", "duration_class", "morphology", "labelled_channel_count",
+    "available_channel_count", "anomalous_channel_count", "strong_channel_count",
+    "anomalous_channel_fraction", "strong_channel_fraction", "core_participating_count",
+    "core_anomalous_count", "core_fraction", "core_41_46_participating",
+    "core_41_46_anomalous", "core_41_46_fraction", "direction", "directional_synchrony",
+    "max_robust_deviation", "median_robust_deviation", "mean_normalized_deviation",
+    "event_score", "classification", "scale_fallback_count", "missing_data_count",
+    "insufficient_telemetry"
+  ],
+  "channel_columns": [
+    "event_id", "channel", "participates", "sample_count", "baseline_count",
+    "first_event_sample", "last_event_sample", "telemetry_coverage_status",
+    "baseline_mean", "baseline_median", "baseline_std", "baseline_mad", "scale_used",
+    "scale_method", "event_mean", "event_median", "event_std", "event_min", "event_max",
+    "absolute_deviation", "normalized_deviation", "max_robust_deviation",
+    "anomalous_fraction", "strong_evidence", "evidence_level", "direction", "missing_data"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "scope": "synthetic semantic smoke reproduction only",
+  "not_esa_reproduction": true,
+  "not_operational_validation": true,
+  "python": "3.11.9",
+  "dependencies": {
+    "numpy": "1.26.4",
+    "pandas": "2.2.2"
+  },
+  "frozen_detector_source": "frozen_detector_v1.py",
+  "frozen_detector_sha256": "527fe01d8a3c6abe6c46c3e9468a74adfe1d00252c28139fa069629f5ac4f71b",
+  "fixture": {
+    "labels": "fixture/labels.csv",
+    "anomaly_types": "fixture/anomaly_types.csv",
+    "telemetry": "fixture/telemetry.csv",
+    "event_count": 30,
+    "channels": [41, 42],
+    "baseline_values": [0.0, 1.0, 2.0, 3.0],
+    "event_value": 10.0,
+    "sha256": {
+      "fixture/labels.csv": "d6bf4c490e0356695f4f3528d321a729a1d9199f45dd1a585dfe14c571fd0bd2",
+      "fixture/anomaly_types.csv": "feb07b0ec541fd7243c03be372f02bd4dc0f84fb036ce0a29e0ba19c0313db74",
+      "fixture/telemetry.csv": "329f5e982d3d51324c4922e67798306664a7293a219dc2446e6975815781fb6f"
+    }
+  },
+  "expected_output": {
+    "contract": "expected_output_contract.json",
+    "sha256": "598a2f2ed5d3db9930494dc6fe4680544184d70c3a6d0f4afa4ecd10d02a1e59",
+    "outputs_sha256": {
+      "class3_detector_results.csv": "4d712c79807ff8702b028395dbb64120ab6a6638715beada5817b8504f977363",
+      "class3_detector_channel_results.csv": "0dff6d76c56bfa83e7172058e0d8be15751fb1533ad4112dc9b722c3a344bef3"
+    }
+  },
+  "derived_expectation": {
+    "baseline_median": 1.5,
+    "baseline_mad": 1.0,
+    "scale": 1.4826,
+    "normalized_deviation": 5.73317145555106,
+    "anomalous_fraction": 1.0,
+    "strong_fraction": 0.0,
+    "core_fraction": 1.0,
+    "directional_synchrony": 1.0,
+    "event_score": 0.75,
+    "classification": "detected / strong evidence"
+  },
+  "tolerances": {
+    "score_abs": 1e-12,
+    "numeric_abs": 1e-12
+  },
+  "historical_esa_outputs_untouched": true
+}

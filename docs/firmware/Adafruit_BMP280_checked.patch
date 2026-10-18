@@ -1,0 +1,33 @@
+# SATSentinel-X local BMP280 checked-transaction patch manifest
+#
+# Base archive:
+#   Adafruit_BMP280_Library-3.0.0.zip
+# Base Adafruit_BMP280.cpp SHA-256:
+#   a11a29248a1f30dfe5d4787f213426ca0abe4c9829dc19a6c7281c45021544a3
+# Patched Adafruit_BMP280.cpp SHA-256:
+#   37d4cb8569072b947a1fd0cc694ed1db26b6441ad9c55a9ab66d57d89b1b2db8
+#
+# This manifest records the exact source transformation. Generate a canonical
+# unified patch with the procedure in docs/firmware/BMP280_PROVENANCE.md; do
+# not treat the unresolved dependencies.lock C8CC... hash as authoritative.
+#
+# Adafruit_BMP280.h additions:
+#   public: setSamplingVerified, takeForcedMeasurementVerified,
+#           readTemperatureVerified, readPressureVerified
+#   private: readCoefficientsVerified, write8Checked, read8Checked,
+#             read16Checked, read24Checked
+#
+# Adafruit_BMP280.cpp changes:
+#   begin(): checked chip-ID read, calibration reads and sampling writes;
+#   setSamplingVerified(): checked CONFIG and CONTROL writes;
+#   write8Checked(), read8Checked(), read16Checked(), read24Checked():
+#       propagate Adafruit BusIO transaction results;
+#   readCoefficientsVerified(): checked calibration-register acquisition;
+#   readTemperatureVerified(): checked temperature-register acquisition and
+#       finite compensated result;
+#   readPressureVerified(): checked temperature and pressure acquisition,
+#       Bosch compensation, finite positive Pa result;
+#   takeForcedMeasurementVerified(): checked forced-mode CONTROL write and
+#       STATUS polling until measurement completion.
+#
+# Existing legacy APIs remain present and unchanged for compatibility.

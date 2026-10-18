@@ -28,8 +28,8 @@ except ImportError:  # pragma: no cover - exercised by setup, not unit tests
 
 from receiver import (  # noqa: E402
     MAX_ACCEPTANCE_GAP_SECONDS,
+    BufferedLFReader,
     TelemetryReceiver,
-    read_framed_line,
 )
 from replay import MAX_SPEED, MIN_SPEED, ReplayController, load_jsonl  # noqa: E402
 from power_autonomy import report_json, run_scenario  # noqa: E402
@@ -46,6 +46,7 @@ POWER_SCENARIOS = {
 }
 MAX_RECENT_RECORDS = 100
 MAX_CHART_POINTS = 180
+TELEMETRY_STALE_SECONDS = MAX_ACCEPTANCE_GAP_SECONDS
 
 
 def _finite_number(value: Any) -> bool:
@@ -57,6 +58,7 @@ class DashboardSession:
         self.lock = threading.RLock()
         self.receiver = TelemetryReceiver()
         self.serial_port: Any = None
+        self.serial_reader: BufferedLFReader | None = None
         self.port_name: str | None = None
         self.reader_thread: threading.Thread | None = None
         self.stop_event = threading.Event()
@@ -141,6 +143,7 @@ class DashboardSession:
         with self.lock:
             self.reset_receiver()
             self.serial_port = port
+            self.serial_reader = BufferedLFReader(port)
             self.port_name = port_name
             self.status = "connected"
             self.status_detail = "Receiving telemetry"
@@ -157,7 +160,10 @@ class DashboardSession:
         with self.lock:
             self.stop_event.set()
             port = self.serial_port
+            reader_thread = self.reader_thread
             self.serial_port = None
+            self.serial_reader = None
+            self.reader_thread = None
             was_connected = self.status == "connected"
             self.status = "disconnected"
             self.status_detail = "No device connected"
@@ -167,6 +173,8 @@ class DashboardSession:
                 port.close()
             except Exception:
                 pass
+        if reader_thread is not None and reader_thread is not threading.current_thread():
+            reader_thread.join(timeout=2.0)
         if was_connected and not quiet:
             self.message("info", "Disconnected; partial session preserved")
 
@@ -246,10 +254,11 @@ class DashboardSession:
         while not self.stop_event.is_set():
             with self.lock:
                 port = self.serial_port
-            if port is None:
+                reader = self.serial_reader
+            if port is None or reader is None:
                 return
             try:
-                kind, frame = read_framed_line(port)
+                kind, frame = reader.read_line()
             except Exception as exc:
                 with self.lock:
                     self.status = "error"
@@ -318,6 +327,59 @@ class DashboardSession:
         with self.lock:
             return "\n".join(self.session_lines) + ("\n" if self.session_lines else "")
 
+    def _telemetry_quality(
+        self,
+        *,
+        age: float | None,
+        records: list[dict[str, Any]],
+        invalid_count: int,
+        sequence_anomalies: int,
+        gaps: int,
+    ) -> dict[str, Any]:
+        """Report transport freshness separately from acquisition verification."""
+        if self.replay is not None and self.replay.snapshot()["state"] == "complete":
+            return {
+                "state": "complete",
+                "reason": "Replay reached its end; no live telemetry is expected",
+                "age_s": age,
+                "threshold_s": TELEMETRY_STALE_SECONDS,
+            }
+        if age is None:
+            return {
+                "state": "no_data",
+                "reason": "No telemetry has been received",
+                "age_s": None,
+                "threshold_s": TELEMETRY_STALE_SECONDS,
+            }
+        if age > TELEMETRY_STALE_SECONDS:
+            return {
+                "state": "stale",
+                "reason": f"No telemetry received for {age:.1f}s",
+                "age_s": age,
+                "threshold_s": TELEMETRY_STALE_SECONDS,
+            }
+        if invalid_count or sequence_anomalies or gaps or (records and not records[-1]["sensor_valid"]):
+            return {
+                "state": "degraded",
+                "reason": "Recent telemetry has validation, ordering, gap or sensor-quality issues",
+                "age_s": age,
+                "threshold_s": TELEMETRY_STALE_SECONDS,
+            }
+        latest_status = records[-1].get("sensor_status") if records else None
+        if latest_status != "measurement_verified":
+            return {
+                "state": "fresh_unverified",
+                "reason": f"Telemetry is recent; acquisition status is {latest_status or 'unknown'}",
+                "age_s": age,
+                "threshold_s": TELEMETRY_STALE_SECONDS,
+            }
+        return {
+            "state": "fresh_verified",
+            "reason": "Recent telemetry has verified acquisition status",
+            "age_s": age,
+            "threshold_s": TELEMETRY_STALE_SECONDS,
+        }
+
     def snapshot(self) -> dict[str, Any]:
         with self.lock:
             now = time.monotonic()
@@ -345,11 +407,19 @@ class DashboardSession:
             if replay_snapshot and replay_snapshot["state"] == "complete":
                 displayed_status = "replay_complete"
                 displayed_detail = "Replay complete"
+            telemetry_quality = self._telemetry_quality(
+                age=age,
+                records=records,
+                invalid_count=invalid_count,
+                sequence_anomalies=sequence_anomalies,
+                gaps=gaps,
+            )
             return {
                 "status": displayed_status,
                 "status_detail": displayed_detail,
                 "port": self.port_name,
                 "last_message_age_s": age,
+                "telemetry_quality": telemetry_quality,
                 "uptime_s": uptime,
                 "logging": self.logging,
                 "records": list(self.recent_records),
@@ -357,6 +427,7 @@ class DashboardSession:
                 "stats": {
                     "valid_records": valid_count,
                     "invalid_records": invalid_count + invalid_sensor_count,
+                    "unverified_records": sum(r["sensor_status"] != "measurement_verified" for r in records),
                     "sequence_anomalies": sequence_anomalies,
                     "data_gaps": gaps,
                     "session_duration_s": uptime,
