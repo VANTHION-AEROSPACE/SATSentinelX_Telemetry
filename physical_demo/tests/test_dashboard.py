@@ -113,6 +113,7 @@ class DashboardSessionTests(unittest.TestCase):
     def test_replay_api_and_evidence_export_use_same_incident(self):
         previous = dashboard.SESSION
         dashboard.SESSION = DashboardSession()
+        dashboard.SESSION.logging = True
         server = dashboard.ThreadingHTTPServer(("127.0.0.1", 0), dashboard.DashboardHandler)
         thread = threading.Thread(target=server.serve_forever)
         thread.start()
@@ -134,11 +135,28 @@ class DashboardSessionTests(unittest.TestCase):
             self.assertEqual(state["replay"]["state"], "complete")
             self.assertEqual(state["source_type"], "synthetic_replay")
             self.assertEqual([r["seq"] for r in state["incident"]["record_refs"]], [8, 9, 10, 11])
+            self.assertEqual(state["incident"]["incident_id"], "synthetic-thermal-rise-001")
+            self.assertEqual(len(state["findings"]), 1)
+            finding = state["findings"][0]
+            self.assertEqual(finding["event"]["onset"]["device_elapsed_ms"], 4000)
+            self.assertEqual([r["seq"] for r in finding["event"]["record_refs"]], [8, 9, 10, 11])
             evidence_response = urllib.request.urlopen(base + "/api/evidence/export")
             self.assertEqual(evidence_response.headers["Content-Type"], "application/json; charset=utf-8")
             self.assertIn("SATSentinelX_Incident_synthetic-thermal-rise-001.json", evidence_response.headers["Content-Disposition"])
             evidence = json.loads(evidence_response.read().decode("utf-8"))
             self.assertEqual(evidence, state["incident"])
+
+            finding_response = urllib.request.urlopen(base + "/api/findings/export")
+            self.assertEqual(finding_response.headers["Content-Type"], "application/json; charset=utf-8")
+            finding_export = json.loads(finding_response.read().decode("utf-8"))
+            self.assertEqual(finding_export, finding)
+
+            telemetry_response = urllib.request.urlopen(base + "/api/session/export")
+            telemetry_records = [json.loads(line) for line in telemetry_response.read().decode("utf-8").splitlines()]
+            self.assertEqual(len(telemetry_records), 14)
+            self.assertTrue(all(record["message_type"] == "telemetry" for record in telemetry_records))
+            self.assertTrue(all("finding_id" not in record and "findings" not in record for record in telemetry_records))
+            self.assertNotIn("message_type", finding_export)
         finally:
             server.shutdown()
             thread.join()
