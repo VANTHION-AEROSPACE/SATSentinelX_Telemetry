@@ -8,16 +8,19 @@ replace the command-line receiver.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import threading
 import time
+import uuid
 from collections import deque
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
+from finding_interface import validate_finding  # noqa: E402
 
 try:
     import serial  # type: ignore
@@ -52,6 +55,109 @@ def _finite_number(value: Any) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool) and value == value and abs(float(value)) != float("inf")
 
 
+def _finding_from_synthetic_incident(incident: dict[str, Any], session_id: str) -> dict[str, Any]:
+    """Adapt the existing synthetic detector incident to the finding contract."""
+    detector = incident["detector"]
+    configuration = {
+        "threshold": detector["threshold_c"],
+        "unit": "degC",
+        "rule": detector["rule"],
+    }
+    configuration_digest = hashlib.sha256(
+        json.dumps(configuration, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    source_records = [
+        {
+            "session_id": session_id,
+            "device_id": incident.get("record_device_id"),
+            "boot_epoch": {"id": None, "state": "unknown"},
+            "seq": record["seq"],
+            "device_elapsed_ms": record["device_time_ms"],
+            "value": record["temperature_c"],
+            "unit": "degC",
+        }
+        for record in incident["record_refs"]
+    ]
+    ordered_refs = [
+        {key: record[key] for key in ("seq", "device_elapsed_ms", "value", "unit")}
+        for record in source_records
+    ]
+    identity = {
+        "session_id": session_id,
+        "detector": detector["id"],
+        "detector_version": detector["version"],
+        "configuration_digest": configuration_digest,
+        "aggregation_policy_version": 1,
+        "ordered_event_record_refs": ordered_refs,
+    }
+    deduplication_key = hashlib.sha256(
+        json.dumps(identity, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    # One stable aggregate identity is updated as replay frames arrive; its
+    # deduplication key reflects the current ordered evidence references.
+    finding_id = f"{session_id}:{detector['id']}:{detector['version']}:aggregate"
+    onset = source_records[0]
+    end = source_records[-1]
+    return {
+        "schema": "satsentinel.detector-finding",
+        "schema_version": 1,
+        "finding_kind": "aggregated_incident",
+        "finding_id": finding_id,
+        "deduplication_key": deduplication_key,
+        "session_id": session_id,
+        "source": {
+            "type": "synthetic_replay",
+            "id": "physical_demo/fixtures/synthetic_anomaly.jsonl",
+            "evidence_class": "synthetic_demonstration",
+        },
+        "device": {
+            "id": incident.get("record_device_id"),
+            "boot_epoch": {"id": None, "state": "unknown", "confidence": "none"},
+        },
+        "detector": {
+            "name": detector["id"],
+            "version": detector["version"],
+            "kind": "rule",
+            "configuration": configuration,
+            "configuration_digest": configuration_digest,
+            "model_artifact_digest": None,
+            "aggregation_policy": {"id": "all-above-threshold-records", "version": 1},
+        },
+        "evaluation": {
+            "status": "scored",
+            "decision": "anomaly",
+            "score": None,
+            "score_semantics": None,
+            "severity": "demo",
+            "severity_semantics": "synthetic demonstration only; not operational severity",
+        },
+        "affected_channels": [
+            {
+                "channel_id": "temperature_c",
+                "source_field": "temperature_c",
+                "unit": "degC",
+                "unit_basis": "fixture_and_documented_wire_contract",
+            }
+        ],
+        "event": {
+            "onset": {"seq": onset["seq"], "device_elapsed_ms": onset["device_elapsed_ms"]},
+            "end": {"seq": end["seq"], "device_elapsed_ms": end["device_elapsed_ms"]},
+            "record_refs": source_records,
+        },
+        "explanation": {
+            "summary": "Synthetic fixture values exceed the configured demonstration threshold.",
+            "reason_codes": [],
+            "supporting_evidence": [
+                {"type": "rule_comparison", "threshold": detector["threshold_c"], "unit": "degC"}
+            ],
+        },
+        "label": {"state": "unknown_unlabelled", "label_source_id": None, "label_version": None},
+        "limitations": [
+            "Synthetic demonstration only; not physical validation, ESA reproduction, detector-v1 validation, or operational diagnosis."
+        ],
+    }
+
+
 class DashboardSession:
     def __init__(self) -> None:
         self.lock = threading.RLock()
@@ -71,8 +177,11 @@ class DashboardSession:
         self.logging = False
         self.messages: deque[dict[str, str]] = deque(maxlen=80)
         self.source_type = "none"
+        self.session_id: str | None = None
         self.replay: ReplayController | None = None
         self.incident: dict[str, Any] | None = None
+        self.finding: dict[str, Any] | None = None
+        self.findings: dict[tuple[str, str, str, str, str], dict[str, Any]] = {}
         self.autonomy_report: dict[str, Any] | None = None
 
     def message(self, level: str, text: str) -> None:
@@ -86,7 +195,46 @@ class DashboardSession:
         self.session_lines.clear()
         self.messages.clear()
         self.incident = None
+        self.finding = None
+        self.findings.clear()
         self.autonomy_report = None
+
+    def publish_finding(self, finding: dict[str, Any]) -> dict[str, Any]:
+        """Validate and upsert one detector result in the active session."""
+        validate_finding(finding)
+        if self.session_id is None or finding["session_id"] != self.session_id:
+            raise ValueError("finding session_id does not match the active session")
+        if finding["source"]["type"] != self.source_type:
+            raise ValueError("finding source type does not match the active session")
+        detector = finding["detector"]
+        kind = finding["finding_kind"]
+        if kind == "aggregated_incident":
+            identity_part = json.dumps(
+                {
+                    "finding_id": finding["finding_id"],
+                    "configuration_digest": detector.get("configuration_digest"),
+                    "aggregation_policy": detector.get("aggregation_policy"),
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+        else:
+            identity_part = finding["deduplication_key"]
+        store_key = (
+            finding["session_id"],
+            detector["name"],
+            detector["version"],
+            kind,
+            identity_part,
+        )
+        # Store a JSON-safe detached copy so detector-owned nested objects cannot
+        # mutate evidence after publication.
+        published = json.loads(json.dumps(finding, allow_nan=False))
+        with self.lock:
+            self.findings[store_key] = published
+            if detector["name"] == "synthetic_temperature_threshold_v1":
+                self.finding = published
+        return published
 
     def run_autonomy_scenario(self, scenario: str) -> tuple[bool, str]:
         path = POWER_SCENARIOS.get(scenario)
@@ -100,6 +248,10 @@ class DashboardSession:
             return False, f"Autonomy scenario unavailable: {type(exc).__name__}"
         with self.lock:
             self.autonomy_report = report
+            self.incident = None
+            self.finding = None
+            self.findings.clear()
+            self.session_id = None
             self.source_type = "synthetic_power_scenario"
             self.status = "autonomy_complete"
             self.status_detail = f"Synthetic autonomy scenario complete: {report['final_outcome']['state']}"
@@ -140,6 +292,8 @@ class DashboardSession:
 
         with self.lock:
             self.reset_receiver()
+            self.session_id = None
+            self.source_type = "physical"
             self.serial_port = port
             self.port_name = port_name
             self.status = "connected"
@@ -173,6 +327,7 @@ class DashboardSession:
     def _replay_reset(self) -> None:
         with self.lock:
             self.reset_receiver()
+            self.session_id = str(uuid.uuid4())
             self.source_type = "synthetic_replay"
             self.status = "replay_ready"
             self.status_detail = "Synthetic replay ready"
@@ -186,6 +341,9 @@ class DashboardSession:
             return False, "Unknown replay source"
         if self.status == "connected":
             return False, "Disconnect the serial device before starting replay"
+        current_replay = self.replay
+        if current_replay is not None and current_replay.snapshot()["state"] == "playing":
+            return False, "A replay is already playing"
         try:
             frames = load_jsonl(path)
             bounded_speed = max(MIN_SPEED, min(MAX_SPEED, float(speed)))
@@ -194,6 +352,7 @@ class DashboardSession:
         with self.lock:
             self.reset_receiver()
             self.source_type = "synthetic_replay" if source == "synthetic" else "recorded_replay"
+            self.session_id = str(uuid.uuid4())
             self.status = "replay_ready"
             self.status_detail = f"{self.source_type.replace('_', ' ').title()} ready"
             self.started_monotonic = time.monotonic()
@@ -209,8 +368,6 @@ class DashboardSession:
             self.status = "replay"
             self.status_detail = f"Playing {self.source_type.replace('_', ' ')}"
         self.ingest_frame(frame)
-        with self.lock:
-            self.incident = detect(list(self.receiver.records)) if self.source_type == "synthetic_replay" else None
 
     def play_replay(self) -> tuple[bool, str]:
         if self.replay is None:
@@ -289,7 +446,19 @@ class DashboardSession:
             if record["sequence_status"] not in {"first", "contiguous"}:
                 self.message("warning", f"Sequence {record['sequence_status']} at #{record['seq']}")
             if self.source_type == "synthetic_replay":
-                self.incident = detect(list(self.receiver.records))
+                incident = detect(list(self.receiver.records))
+                self.incident = incident
+                if incident is None or self.session_id is None:
+                    self.finding = None
+                    self.findings = {
+                        key: value for key, value in self.findings.items()
+                        if value["detector"]["name"] != "synthetic_temperature_threshold_v1"
+                    }
+                else:
+                    incident_for_adapter = dict(incident)
+                    incident_for_adapter["record_device_id"] = record["device_id"]
+                    finding = _finding_from_synthetic_incident(incident_for_adapter, self.session_id)
+                    self.finding = self.publish_finding(finding)
             return record
 
     def start_logging(self) -> tuple[bool, str]:
@@ -365,8 +534,13 @@ class DashboardSession:
                 },
                 "messages": list(self.messages),
                 "source_type": self.source_type,
+                "session": {
+                    "session_id": self.session_id,
+                    "boot_epoch": {"id": None, "state": "unknown", "confidence": "none"},
+                } if self.session_id is not None and self.source_type == "synthetic_replay" else None,
                 "replay": replay_snapshot,
                 "incident": self.incident,
+                "findings": list(self.findings.values()),
                 "autonomy": self.autonomy_report,
             }
 
@@ -422,6 +596,18 @@ class DashboardHandler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Disposition", f"attachment; filename=SATSentinelX_Incident_{safe_id}.json")
             self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+        elif path == "/api/findings/export":
+            payload = SESSION.finding or {"status": "NO_FINDINGS", "source_type": SESSION.source_type}
+            data = (json.dumps(payload, indent=2, allow_nan=False) + "\n").encode("utf-8")
+            finding_id = str(payload.get("finding_id", "findings"))
+            safe_id = "".join(character if character.isalnum() or character in "-_" else "_" for character in finding_id)
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Disposition", f"attachment; filename=SATSentinelX_Finding_{safe_id}.json")
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store")
             self.end_headers()
             self.wfile.write(data)
         elif path == "/api/autonomy/evidence/export":
